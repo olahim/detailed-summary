@@ -1,0 +1,472 @@
+
+1. Two Sum
+
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+
+You can solve this problem by using a HashMap to store the values you've seen so far and their indices. Here's an example solution in Java:
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class TwoSum {
+    public static int[] findTwoSum(int[] nums, int target) {
+
+        Map<Integer, Integer> numToIndex = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (numToIndex.containsKey(complement)) {	// what is containsKey?
+                return new int[] {numToIndex.get(complement), i};	// what is get?
+            }
+            numToIndex.put(nums[i], i);
+        }
+
+        // If there's no solution, throw an exception or return an appropriate value
+        throw new IllegalArgumentException("No solution found");
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {2, 7, 11, 15};
+        int target = 9;
+        int[] result = findTwoSum(nums, target);
+        System.out.println("Indices: " + result[0] + ", " + result[1]);
+    }
+}
+
+
+- This code defines a findTwoSum method that takes an array of integers nums and an integer target as input. 
+- The method iterates through the array, and for each value, it calculates the complement needed to reach the target. 
+- It then checks if the complement exists in the HashMap. If it does, it returns the indices of the current number and the complement. If not, it adds the current number and its index to the HashMap.
+- The time complexity of this solution is O(n), where n is the length of the input array, since it processes each number exactly once.
+
+
+
+2. Palindrome Number
+Given an integer x, return true if x is a palindrome, and false otherwise.
+
+A palindrome is a number that reads the same forward and backward. To check if an integer is a palindrome, you can reverse its digits and compare the original and reversed numbers. Here's an example solution in Java:
+
+public class PalindromeNumber {
+    public static boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+
+        int reversed = 0;
+        int original = x;
+        while (x > 0) {
+            reversed = reversed * 10 + x % 10;
+            x /= 10;
+        }
+        
+        return original == reversed;
+    }
+
+    public static void main(String[] args) {
+        int x = 121;
+        System.out.println("Is " + x + " a palindrome? " + isPalindrome(x));
+
+        x = -121;
+        System.out.println("Is " + x + " a palindrome? " + isPalindrome(x));
+    }
+}
+
+- The isPalindrome method first checks if the input number is negative or if it ends with a 0 (and is not 0 itself), in which case it cannot be a palindrome. 
+- Then, it reverses the digits of the number by iteratively taking the last digit and adding it to the reversed number multiplied by 10. 
+- Finally, it compares the original and reversed numbers to determine if the input is a palindrome.
+- The time complexity of this solution is O(log10(n)), where n is the input number, as it processes each digit of the number once.
+
+
+3. Roman to Integer
+
+To convert a Roman numeral to an integer, you can iterate through the string from left to right, and for each symbol, add its corresponding value to the result. If a smaller numeral appears before a larger numeral, you need to subtract the value of the smaller numeral. Here's an example solution in Java:
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class RomanToInteger {
+    private static final Map<Character, Integer> romanToIntegerMap = new HashMap<>();
+
+    static {
+        romanToIntegerMap.put('I', 1);
+        romanToIntegerMap.put('V', 5);
+        romanToIntegerMap.put('X', 10);
+        romanToIntegerMap.put('L', 50);
+        romanToIntegerMap.put('C', 100);
+        romanToIntegerMap.put('D', 500);
+        romanToIntegerMap.put('M', 1000);
+    }
+
+    public static int romanToInt(String s) {
+        int total = 0;
+        int prevValue = 0;
+
+        for (char c : s.toCharArray()) {
+            int currentValue = romanToIntegerMap.get(c);
+            total += (currentValue > prevValue) ? currentValue - 2 * prevValue : currentValue;
+            prevValue = currentValue;
+        }
+
+        return total;
+    }
+
+    public static void main(String[] args) {
+        String roman = "MCMXCIV";
+        System.out.println("Roman numeral " + roman + " is " + romanToInt(roman) + " as an integer.");
+    }
+}
+
+- The romanToInt method first initializes a total variable to store the result and a prevValue variable to store the value of the previous Roman numeral. 
+- It then iterates through the input string, and for each symbol, it retrieves its corresponding integer value using the romanToIntegerMap. 
+- If the current value is greater than the previous value, it means that a smaller numeral appeared before a larger numeral, so you need to subtract the smaller numeral's value twice (once for adding it in the previous step and once for subtracting it in the current step). 
+- Finally, the method returns the total sum.
+- The time complexity of this solution is O(n), where n is the length of the input string, as it processes each character in the string once.
+
+
+4. Longest Common Prefix
+
+Write a function to find the longest common prefix string amongst an array of strings.
+If there is no common prefix, return an empty string "".
+
+
+You can solve this problem by iterating through the characters of the first string in the array and checking if the same character exists in the same position in all other strings. If you find a mismatch, you can return the common prefix found so far. Here's an example solution in Java:
+
+
+public class LongestCommonPrefix {
+    public static String findLongestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        for (int i = 0; i < strs[0].length(); i++) {
+            char currentChar = strs[0].charAt(i);
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[j].charAt(i) != currentChar) {
+                    return strs[0].substring(0, i);
+                }
+            }
+        }
+        return strs[0];
+    }
+
+    public static void main(String[] args) {
+        String[] strs = {"flower", "flow", "flight"};
+        System.out.println("Longest common prefix: " + findLongestCommonPrefix(strs));
+
+        strs = new String[]{"dog", "racecar", "car"};
+        System.out.println("Longest common prefix: " + findLongestCommonPrefix(strs));
+    }
+}
+
+
+- The findLongestCommonPrefix method first checks if the input array is null or empty, in which case it returns an empty string. 
+- It then iterates through the characters of the first string and compares each character with the same position in all other strings. 
+- If a mismatch is found or the current string ends, it returns the common prefix found so far. 
+- If the loop completes without finding a mismatch, it means the first string is the longest common prefix, so the method returns the first string.
+- The time complexity of this solution is O(n * m), where n is the number of strings in the input array and m is the length of the shortest string in the array, as it processes each character in each string until a mismatch is found or the shortest string ends.
+
+
+5. Valid Parentheses
+
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+You can solve this problem by using a stack data structure to keep track of the opening brackets. Whenever you encounter a closing bracket, check if the top of the stack contains the matching opening bracket. If not, the input string is not valid. Here's an example solution in Java:
+
+import java.util.Stack;
+
+public class ValidParentheses {
+    public static boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if ((c == ')' && top != '(') || (c == '}' && top != '{') || (c == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    public static void main(String[] args) {
+        String s = "()[]{}";
+        System.out.println("Is \"" + s + "\" valid? " + isValid(s));
+
+        s = "([)]";
+        System.out.println("Is \"" + s + "\" valid? " + isValid(s));
+    }
+}
+
+- The isValid method initializes an empty stack and iterates through the characters of the input string. 
+- If it encounters an opening bracket, it pushes the character onto the stack. 
+- If it encounters a closing bracket, it first checks if the stack is empty (which means there's no matching opening bracket), and if so, returns false.
+- Otherwise, it pops the top element from the stack and checks if it matches the corresponding opening bracket. If not, it returns false. 
+- After the loop completes, it checks if the stack is empty (which means all brackets have been matched) and returns the result.
+- The time complexity of this solution is O(n), where n is the length of the input string, as it processes each character in the string once.
+
+6. Merge Two Sorted Lists
+
+You are given the heads of two sorted linked lists list1 and list2.
+Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+To merge two sorted lists, you can use the "merge" step of the merge sort algorithm. You iterate through both lists and compare the current elements, choosing the smaller one to add to the result list. Here's an example solution in Java using the ListNode class, which is a common representation of singly-linked lists:
+
+public class ListNode {
+    int val;
+    ListNode next;
+
+    ListNode() {
+    }
+
+    ListNode(int val) {
+        this.val = val;
+    }
+
+    ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public class MergeSortedLists {
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val < l2.val) {
+                current.next = l1;
+                l1 = l1.next;
+            } else {
+                current.next = l2;
+                l2 = l2.next;
+            }
+            current = current.next;
+        }
+
+        if (l1 != null) {
+            current.next = l1;
+        } else {
+            current.next = l2;
+        }
+
+        return dummy.next;
+    }
+
+    public static void main(String[] args) {
+        ListNode l1 = new ListNode(1, new ListNode(2, new ListNode(4)));
+        ListNode l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+
+        ListNode merged = mergeTwoLists(l1, l2);
+        System.out.print("Merged lists: ");
+        while (merged != null) {
+            System.out.print(merged.val + " ");
+            merged = merged.next;
+        }
+    }
+}
+
+
+- The mergeTwoLists method initializes a dummy ListNode to serve as the starting point for the result list. 
+- It iterates through both input lists (l1 and l2) until one of them is exhausted. 
+- At each step, it chooses the ListNode with the smaller value and adds it to the result list, updating the current pointer. 
+- After the loop, it checks if either of the input lists still has remaining elements and adds them to the result list. 
+- Finally, it returns the merged list starting from the dummy.next ListNode.
+- The time complexity of this solution is O(n + m), where n and m are the lengths of the input lists, as it processes each element in both lists once.
+
+
+
+7. Remove Duplicates from Sorted Array
+
+To remove duplicates from a sorted integer array in-place, you can use the two-pointer technique. Keep one pointer (i) for iterating through the array and another pointer (j) for marking the position of the last non-duplicate element. When you encounter a new unique element, increment the j pointer and overwrite the duplicate element at position j with the new unique element. Here's an example solution in Java:
+
+public class RemoveDuplicatesFromSortedArray {
+    public static int removeDuplicates(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int j = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[j]) {
+                j++;
+                nums[j] = nums[i];
+            }
+        }
+        return j + 1;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
+        int uniqueElements = removeDuplicates(nums);
+
+        System.out.print("Unique elements: ");
+        for (int i = 0; i < uniqueElements; i++) {
+            System.out.print(nums[i] + " ");
+        }
+    }
+}
+
+
+- The removeDuplicates method first checks if the input array is null or empty, in which case it returns 0. It initializes the j pointer to 0 and iterates through the input array with the i pointer. 
+- When it encounters a new unique element, it increments the j pointer and overwrites the duplicate element at position j with the new unique element. 
+- After the loop, it returns the number of unique elements as j + 1.
+- The time complexity of this solution is O(n), where n is the length of the input array, as it processes each element in the array once.
+
+
+8. Remove Element
+
+Given an integer array nums and an integer val, remove all occurrences of val in nums in-place. The order of the elements may be changed. Then return the number of elements in nums which are not equal to val.
+To remove all occurrences of a given value from an integer array in-place, you can use the two-pointer technique. Keep one pointer (i) for iterating through the array and another pointer (j) for marking the position to overwrite the target value. When you encounter an element that is not equal to the target value, overwrite the element at position j with the current element and increment the j pointer. Here's an example solution in Java:
+
+
+public class RemoveElement {
+    public static int removeElement(int[] nums, int val) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int j = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != val) {
+                nums[j] = nums[i];
+                j++;
+            }
+        }
+        return j;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 2, 2, 3};
+        int val = 3;
+        int newSize = removeElement(nums, val);
+
+        System.out.print("Elements after removing " + val + ": ");
+        for (int i = 0; i < newSize; i++) {
+            System.out.print(nums[i] + " ");
+        }
+    }
+}
+
+- The removeElement method first checks if the input array is null or empty, in which case it returns 0. 
+- It initializes the j pointer to 0 and iterates through the input array with the i pointer. - When it encounters an element that is not equal to the target value (val), it overwrites the element at position j with the current element and increments the j pointer. After the loop, it returns the number of elements not equal to the target value as j.
+- The time complexity of this solution is O(n), where n is the length of the input array, as it processes each element in the array once.
+
+9. Find the Index of the First Occurrence in a String
+
+Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+To find the first occurrence of a substring (needle) in a given string (haystack), you can use a simple nested loop to iterate through the characters of haystack and needle. If you find a matching character in haystack, iterate through the following characters to see if they match the remaining characters of needle. If you find a complete match, return the index of the first character in haystack. Here's an example solution in Java:
+
+public class NeedleInHaystack {
+    public static int strStr(String haystack, String needle) {
+        if (needle == null || needle.length() == 0) {
+            return 0;
+        }
+
+        int n = haystack.length();
+        int m = needle.length();
+
+        for (int i = 0; i <= n - m; i++) {
+            int j;
+            for (j = 0; j < m; j++) {
+                if (haystack.charAt(i + j) != needle.charAt(j)) {
+                    break;
+                }
+            }
+            if (j == m) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static void main(String[] args) {
+        String haystack = "hello";
+        String needle = "ll";
+        System.out.println("First occurrence index: " + strStr(haystack, needle));
+
+        haystack = "aaaaa";
+        needle = "bba";
+        System.out.println("First occurrence index: " + strStr(haystack, needle));
+    }
+}
+
+
+- The strStr method first checks if needle is null or empty, in which case it returns 0. 
+- It initializes two variables n and m to store the lengths of haystack and needle, respectively. 
+-It then iterates through the characters of haystack with the i pointer, making sure there are enough remaining characters to match needle. 
+- For each character in haystack, it initializes the j pointer to iterate through the characters of needle. 
+- If it finds a mismatch, it breaks out of the inner loop. If it completes the inner loop without finding a mismatch, it means a complete match was found, and it returns the index of the first character in haystack. 
+- If the outer loop completes without finding a match, it returns -1.
+- The time complexity of this solution is O(n * m), where n is the length of haystack and m is the length of needle, as it processes each character in needle for each character in haystack in the worst case.
+
+
+10. Search Insert Position
+
+Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+You must write an algorithm with O(log n) runtime complexity.
+
+To find the index of a target value in a sorted array or the index where it would be if it were inserted in order, you can use the binary search algorithm. Binary search has a runtime complexity of O(log n) and works by iteratively dividing the search interval in half. Here's an example solution in Java:
+public class SearchInsertPosition {
+    public static int searchInsert(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return left;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 3, 5, 6};
+        int target = 5;
+        System.out.println("Index: " + searchInsert(nums, target));
+
+        target = 2;
+        System.out.println("Index: " + searchInsert(nums, target));
+
+        target = 7;
+        System.out.println("Index: " + searchInsert(nums, target));
+
+        target = 0;
+        System.out.println("Index: " + searchInsert(nums, target));
+    }
+}
+
+- The searchInsert method initializes two pointers, left and right, to the first and last indices of the input array, respectively. 
+- It then enters a loop that continues until left is greater than right. 
+- Inside the loop, it calculates the middle index mid and checks if the target value is equal to the value at the middle index. 
+- If it is, it returns the middle index. If the target value is greater than the value at the middle index, it updates the left pointer to mid + 1.
+- If the target value is less than the value at the middle index, it updates the right pointer to mid - 1. When the loop finishes, it returns the left pointer, which is the index where the target value should be inserted.
+- The time complexity of this solution is O(log n), where n is the length of the input array, as it reduces the search space by half in each iteration.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

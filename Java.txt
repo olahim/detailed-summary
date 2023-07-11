@@ -1,0 +1,730 @@
+
+
+++++++++++++++++  Chapter 2, Introduction to Java Applications; Input/Output and Operators
+
+- A Java application  executes when you use the java command to launch the JVM. 
+
+- Javadoc comments, delimited by /** and */, enable you to embed program documentation in your code.
+
+- A syntax error occurs when the compiler encounters code that violates Java’s language rules.
+
+- Blank lines, space characters and tab characters are known as white space. White space makes programs easier to read and is normally ignored by the compiler.
+
+- Keywords are reserved for use by Java and are always spelled with all lowercase letters.
+
+- By convention, all class names in Java begin with a capital letter and capitalize the first letter of each word they include (e.g., SampleClassName).
+
+- A Java class name is an identifier—a series of characters consisting of letters, digits, underscores (_) and dollar signs ($) that does not begin with a digit and does not contain spaces.
+
+- Method main is delimited by braces, is the starting point of every Java application and must begin with
+
+	public static void main(String[] args)
+
+- Methods perform tasks and return information when they complete them. Keyword void indicates that a method will perform a task but return no information.
+
+- A string in double quotes is sometimes called a character string or a string literal.
+
+- Method System.out.println displays its argument in the command window followed by a newline character to position the output cursor to the beginning of the next line.
+
+- You compile a program with the command javac. If the program contains no syntax errors, a class file containing the Java bytecodes that represent the application is created. These bytecodes are interpreted by the JVM when you execute the program.
+
+- To run an application, type java followed by the name of the class that contains method main.
+
+- System.out.print displays its argument and positions the output cursor immediately after the last character displayed.
+
+- A backslash (\) in a string is an escape character.
+
+	+ \n : represents the newline character.
+
+- System.out.printf method displays formatted data.
+
+- The format specifier %s ( placeholder for a string.
+
+- The format specifier %d ( p. 48) is a placeholder for an int value.
+
+- Java’s rich set of predefined classes are grouped into packages — named groups of classes. These are referred to as the Java class library, or the Java Application Programming Interface (Java API).
+
+- Variables of type char ( p. 47) represent individual characters, such as an uppercase letter (e.g., A), a digit (e.g., 7), a special character (e.g., * or %) or an escape sequence (e.g., tab, \t).
+
+- Types such as int, float, double and char are primitive types ( p. 47). Primitive-type names are keywords; thus, they must appear in all lowercase letters.
+
+- Portions of statements that have values are called expressions
+
+
+
+++++++++++++++++ Chapter 3, Introduction to Classes, Objects, Methods and Strings
+
+
+i. Instance Variables, set Methods and get Methods
+
+- Each class you create becomes a new type that can be used to declare variables and create objects.
+
+- You can declare new classes as needed; this is one reason Java is known as an extensible language.
+
+
+ii. a Account Class with an Instance Variable, a set Method and a get Method
+
+- Each class declaration that begins with the access modifier ( p. 70) public must be stored in a file that has the same name as the class and ends with the .java filename extension.
+
+- Every class declaration contains keyword class followed immediately by the class’s name.
+
+- Class, method and variable names are identifiers. By convention all use camel-case names. Class names begin with an uppercase letter, and method and variable names begin with a lowercase letter.
+
+- An object has attributes that are implemented as instance variables (p. 71) and carried with it throughout its lifetime.
+
+- Instance variables exist before methods are called on an object, while the methods are executing and after the methods complete execution.
+
+- A class normally contains one or more methods that manipulate the instance variables that belong to particular objects of the class. 
+
+- Instance variables are declared inside a class declaration but outside the bodies of the class’s method declarations.
+
+- Each object (instance) of the class has its own copy of each of the class’s instance variables.
+
+- Most instance-variable declarations are preceded with the keyword private, which is an access modifier. Variables or methods declared with access modifier private are accessible only to methods of the class in which they’re declared.
+
+- Parameters are declared in a comma-separated parameter list (p. 72), which is located inside the parentheses that follow the method name in the method declaration. Multiple parameters are separated by commas. Each parameter must specify a type followed by a variable name.
+
+- Variables declared in the body of a particular method are local variables and can be used only in that method. When a method terminates, the values of its local variables are lost. A method’s parameters are local variables of the method.
+
+- Every method’s body is delimited by left and right braces ({ and }).
+
+- Each method’s body contains one or more statements that perform the method’s task(s).
+
+- The method’s return type specifies the type of data returned to a method’s caller. Keyword void indicates that a method will perform a task but will not return any information.
+
+- Empty parentheses following a method name indicate that the method does not require any parameters to perform its task.
+
+- When a method that specifies a return type (p. 72) other than void is called and completes its task, the method must return a result to its calling method.
+
+- The return statement (p. 73) passes a value from a called method back to its caller.
+
+- Classes often provide public methods to allow the class’s clients to set or get private instance variables.
+
+
+b. AccountTest Class That Creates and Uses an Object of Class Account
+
+- A class that creates an object of another class, then calls the object’s methods, is a driver class.
+
+- Scanner method nextLine (p. 74) reads characters until a newline character is encountered, then returns the characters as a String.
+
+- Scanner method next (p. 74) reads characters until any white-space character is encountered, then returns the characters as a String.
+
+- A class instance creation expression (p. 74) begins with keyword new and creates a new object.
+
+- A constructor is similar to a method but is called implicitly by the new operator to initialize an object’s instance variables at the time the object is created.
+
+- To call a method of an object, follow the object name with a dot separator (p. 75), the method name and a set of parentheses containing the method’s arguments.
+
+- Local variables are not automatically initialized. Every instance variable has a default initial value—a value provided by Java when you do not specify the instance variable’s initial value.
+
+- The default value for an instance variable of type String is null.
+
+- A method call supplies values—known as arguments—for each of the method’s parameters. Each argument’s value is assigned to the corresponding parameter in the method header.
+
+- The number of arguments in a method call must match the number of parameters in the method declaration’s parameter list.
+
+- The argument types in the method call must be consistent with the types of the corresponding parameters in the method’s declaration.
+
+c. Compiling and Executing an App with Multiple Classes
+
+- The javac command can compile multiple classes at once. Simply list the source-code filenames after the command with each filename separated by a space from the next. If the directory containing the app includes only one app’s files, you can compile all of its classes with the command javac *.java. The asterisk (*) in *.java indicates that all
+files in the current directory ending with the filename extension “.java” should be compiled.
+
+d. Account UML Class Diagram with an Instance Variable and set and get Methods
+
+- In the UML, each class is modeled in a class diagram (p. 77) as a rectangle with three compartments. The top one contains the class’s name centered horizontally in boldface. The middle one contains the class’s attributes, which correspond to instance variables in Java. The bottom one contains the class’s operations (p. 77), which correspond to methods and constructors in Java.
+
+- The UML represents instance variables as an attribute name, followed by a colon and the type.
+
+- Private attributes are preceded by a minus sign in the UML.
+
+- The UML models operations by listing the operation name followed by a set of parentheses. A plus sign (+) in front of the operation name indicates that the operation is a public one in the UML (i.e., a public method in Java).
+
+- The UML models a parameter of an operation by listing the parameter name, followed by a colon and the parameter type between the parentheses after the operation name.
+
+- The UML indicates an operation’s return type by placing a colon and the return type after the parentheses following the operation name.
+
+- UML class diagrams do not specify return types for operations that do not return values.
+
+- Declaring instance variables private is known as information hiding.
+
+e. Additional Notes on Class AccountTest
+
+- You must call most methods other than main explicitly to tell them to perform their tasks.
+
+- A key part of enabling the JVM to locate and call method main to begin the app’s execution is the static keyword, which indicates that main is a static method that can be called without first creating an object of the class in which the method is declared.
+
+- Most classes you’ll use in Java programs must be imported explicitly. There’s a special relationship between classes that are compiled in the same directory. By default, such classes are considered to be in the same package—known as the default package. Classes in the same package are implicitly imported into the source-code files of other classes in that package. An import declaration is not required when one class in a package uses another in the same package.
+
+- An import declaration is not required if you always refer to a class with
+its fully qualified class name, which includes its package name and class
+name.
+
+
+f. Software Engineering with private Instance Variables and public set and get Methods
+
+- Declaring instance variables private is known as information hiding.
+
+
+
+iii. Account Class: Initializing Objects with Constructors
+
+- Each class you declare can optionally provide a constructor with parameters that can be used to initialize an object of a class when the object is created.
+
+- Java requires a constructor call for every object that’s created.
+
+- Constructors can specify parameters but not return types.
+
+- If a class does not define constructors, the compiler provides a default constructor (p. 82) with no parameters, and the class’s instance variables are initialized to their default values.
+
+- If you declare a constructor for a class, the compiler will not create a default constructor for that class.
+
+- The UML models constructors in the third compartment of a class diagram. To distinguish a constructor from a class’s operations, the UML places the word “constructor” between guillemets (« and »; p. 82) before the constructor’s name.
+
+
+iv. Account Class with a Balance; Floating-Point Numbers
+
+- A floating-point number (p. 83) is a number with a decimal point. Java provides two primitive types for storing floating-point numbers in memory—float and double.
+
+- Variables of type float represent single-precision floating-point numbers and have seven significant digits. Variables of type double represent double-precision floating-point numbers. These require twice as much memory as float variables and provide 15 significant digits—approximately double the precision of float variables.
+
+- Floating-point literals (p. 83) are of type double by default.
+
+- The format specifier %f (p. 86) is used to output values of type float or double. The format specifier %.2f specifies that two digits of precision (p. 86) should be output to the right of the decimal point in the floating-point number.
+
+- Scanner method nextDouble (p. 87) returns a double value.
+
+- The default value for an instance variable of type double is 0.0 (or simply 0), and the default value for an instance variable of type int is 0.
+
+v. Primitive Types vs. Reference Types
+
+- Types in Java are divided into two categories—primitive types and reference types. The primitive types are boolean, byte, char, short, int, long, float and double. All other types are reference types, so classes, which specify the types of objects, are reference types.
+
+- A primitive-type variable can store exactly one value of its declared type at a time.
+
+- Primitive-type instance variables are initialized by default. Variables of types byte, char, short, int, long, float and double are initialized to 0. Variables of type boolean are initialized to false.
+
+- Reference-type variables (called references; p. 88) store the location of an object in the computer’s memory. Such variables refer to objects in the program. The object that’s referenced may contain many instance variables and methods.
+
+- Reference-type instance variables are initialized by default to the value null.
+
+- A reference to an object (p. 88) is required to invoke an object’s methods. A primitive-type variable does not refer to an object and therefore cannot be used to invoke a method.
+
+
+
+
+++++++++++++++++ Chapter 4, Control Statements: Part 1; Assignment, ++ and-- Operators 
+
+i. Algorithms
+
+- Any computing problem can be solved by executing a series of actions (p. 105) in a specific order.
+
+- A procedure for solving a problem in terms of the actions to execute and the order in which they execute is called an algorithm (p. 105).
+
+- Specifying the order in which statements execute in a program is called program control (p. 106).
+
+ii. Pseudocode
+
+- Pseudocode (p. 106) is an informal language that helps you develop algorithms without having to worry about the strict details of Java language syntax.
+
+- Pseudocode is not an actual computer programming language. You may, of course, use your own native language(s) to develop your own pseudocode.
+
+- Pseudocode helps you “think out” a program before attempting to write it in a programming language, such as Java.
+
+- Carefully prepared pseudocode can easily be converted to a corresponding Java program.
+
+iii. Control Structures
+
+- Normally, statements in a program are executed one after the other in the order in which they’re written. This process is called sequential execution (p. 106).
+
+- Various Java statements enable you to specify that the next statement to execute is not necessarily the next one in sequence. This is called transfer of control (p. 106).
+
+- Bohm and Jacopini demonstrated that all programs could be written in terms of only three control structures (p. 107)—the sequence structure, the selection structure and the iteration structure.
+
+- The term “control structures” comes from the field of computer science. The Java Language Specification refers to “control structures” as “control statements.”
+
+a. Sequence Structure in Java
+
+- The sequence structure is built into Java. Unless directed otherwise, the computer executes Java statements one after the other in the order in which they’re written—that is, in sequence.
+
+- Anywhere a single action may be placed, several actions may be placed in sequence.
+
+- Activity diagrams (p. 107) are part of the UML. An activity diagram models the workflow (p. 107; also called the activity) of a portion of a software system.
+
+- Activity diagrams are composed of symbols (p. 107)—such as action-state symbols, diamonds and small circles—that are connected by transition arrows, which represent the flow of the activity.
+
+- Action states (p. 107) contain action expressions that specify particular actions to perform.
+
+- The arrows in an activity diagram represent transitions, which indicate the order in which the actions represented by the action states occur.
+
+- The solid circle located at the top of an activity diagram represents the activity’s initial state (p. 108)—the beginning of the workflow before the program performs the modeled actions.
+
+- The solid circle surrounded by a hollow circle that appears at the bottom of the diagram represents the final state (p. 108)—the end of the workflow after the program performs its actions.
+
+- Rectangles with their upper-right corners folded over are UML notes (p. 108)—explanatory remarks that describe the purpose of symbols in the diagram.
+
+b. Selection Statements in Java
+
+- Java has three types of selection statements
+
+	+ The if single-selection statement ( p. 108) selects or ignores one or more actions.
+
+	+ The if…else double-selection statement selects between two actions or groups of actions.
+
+	+ The switch statement is called a multiple-selection statement
+
+- Java provides the while, do…while, for and enhanced for iteration statements that enable programs to perform statements repeatedly as long as a loop-continuation condition remains true.
+
+- The while and for statements perform the action(s) in their bodies zero or more times, based on their loop-continuation conditions ( do…while statement its body one or more times.
+
+- The conditional operator ?: ( p. 113) takes three operands. Together, the operands and the ?: symbol form a conditional expression ( p. 113). The first operand (to the left of the ?) is a boolean expression, the second is the value of the conditional expression if the condition is true and the third is the value of the conditional expression if the condition is false.
+
+- The while iteration statement allows you to specify that a program should repeat an action while some condition remains true
+
+c. Summary of Control Statements in Java
+
+- Every program is formed by combining as many sequence, selection and iteration statements (p. 108) as is appropriate for the algorithm the program implements.
+
+- Single-entry/single-exit control statements (p. 108) are attached to one another by connecting the exit point of one to the entry point of the next. This is known as control-statement stacking.
+
+- A control statement may also be nested (p. 109) inside another control
+statement.
+
+iv. if Single-Selection Statement
+
+- Programs use selection statements to choose among alternative courses of action.
+
+- The single-selection if statement’s activity diagram contains the diamond symbol, which indicates that a decision is to be made. The workflow follows a path determined by the symbol’s associated guard conditions (p. 109). If a guard condition is true, the workflow enters the action state to which the corresponding transition arrow points.
+
+- The if statement is a single-entry/single-exit control statement.
+
+v. if...else Double-Selection Statement
+
+- The if single-selection statement executes its body only when the condition is true.
+
+- The if...else double-selection statement performs one action (or group of actions) when the condition is true and another action (or group of actions) when the condition is false.
+
+a. Nested if...else Statements
+
+- A program can test multiple cases with nested if...else statements (p. 111).
+
+b. Dangling-else Problem
+
+- The Java compiler associates an else with the immediately preceding if unless told to do otherwise by the placement of braces.
+
+c. Blocks
+
+- A block (p. 112) of statements can be placed anywhere that a single statement can be placed.
+
+- A logic error (p. 113) has its effect at execution time. A fatal logic error (p.
+113) causes a program to fail and terminate prematurely. A nonfatal logic error (p. 113) allows a program to continue executing, but causes it to produce incorrect results.
+
+- Just as a block can be placed anywhere a single statement can be placed, you can also use an empty statement, represented by placing a semicolon(;) where a statement would normally be.
+
+d.  Conditional Operator (?:)
+
+- The conditional operator ?: (p. 113) takes three operands. Together, the operands and the ?: symbol form a conditional expression (p. 113). The first operand (to the left of the ?) is a boolean expression, the second is the value of the conditional expression if the condition is true and the third is the value of the conditional expression if the condition is false.
+
+vi. while Iteration Statement
+
+- The while iteration statement (p. 116) allows you to specify that a program should repeat an action while some condition remains true.
+
+- The UML’s merge (p. 117) symbol joins two flows of activity into one.
+
+- The decision and merge symbols can be distinguished by the number of incoming and outgoing transition arrows. A decision symbol has one transition arrow pointing to the diamond and two or more transition arrows pointing out from the diamond to indicate possible transitions from that point. Each transition arrow pointing out of a decision symbol has a guard condition. A merge symbol has two or more transition arrows pointing to the diamond and only one transition arrow pointing from the diamond, to indicate multiple activity flows merging to continue the activity. None of the transition arrows associated with a merge symbol has a guard condition.
+
+vii. Formulating Algorithms: Counter-Controlled Iteration
+
+- Counter-controlled iteration (p. 118) uses a variable called a counter (or control variable) to control the number of times a set of statements execute.
+
+- Counter-controlled iteration is often called definite iteration (p. 118), because the number of iterations is known before the loop begins executing.
+
+- A total (p. 118) is a variable used to accumulate the sum of several values. Variables used to store totals are normally initialized to zero before being used in a program.
+
+- A local variable’s declaration must appear before the variable is used in that method. A local variable cannot be accessed outside the method in which it’s declared.
+
+- Dividing two integers results in integer division—the calculation’s fractional part is truncated.
+
+viii. Formulating Algorithms: Sentinel-Controlled Iteration
+
+- In sentinel-controlled iteration (p. 122), a special value called a sentinel value (also called a signal value, a dummy value or a flag value) is used to indicate “end of data entry.”
+
+- A sentinel value must be chosen that cannot be confused with an acceptable input value.
+
+- Top-down, stepwise refinement (p. 122) is essential to the development of well-structured programs.
+
+- Division by zero is a logic error.
+
+- To perform a floating-point calculation with integer values, cast one of the integers to type double.
+
+- Java knows how to evaluate only arithmetic expressions in which the operands’ types are identical. To ensure this, Java performs an operation called promotion on selected operands.
+
+- The unary cast operator is formed by placing parentheses around the name of a type.
+
+ix. Compound Assignment Operators
+
+- The compound assignment operators (p. 133) abbreviate assignments. Statements of the form
+
+variable = variable operator expression;
+
+where operator is one of the binary operators +, -, *, / or %, can be
+written in the form
+
+variable operator= expression;
+
+- The += operator adds the value of the expression on the right of the operator to the value of the variable on the left of the operator and stores the result in the variable on the left of the operator.
+
+x. Increment and Decrement Operators
+
+- The unary increment operator, ++, and the unary decrement operator, --, add 1 to or subtract 1 from the value of a numeric variable (p. 134).
+
+- An increment or decrement operator that’s prefixed (p. 134) to a variable is the prefix increment or prefix decrement operator, respectively. An increment or decrement operator that’s postfixed (p. 134) to a variable is the postfix increment or postfix decrement operator, respectively.
+
+- Using the prefix increment or decrement operator to add or subtract 1 is known as preincrementing or predecrementing, respectively.
+
+- Preincrementing or predecrementing a variable causes the variable to be incremented or decremented by 1; then the new value of the variable is used in the expression in which it appears.
+
+- Using the postfix increment or decrement operator to add or subtract 1 is known as postincrementing or postdecrementing, respectively.
+
+- Postincrementing or postdecrementing the variable causes its value to be used in the expression in which it appears; then the variable’s value is incremented or decremented by 1.
+
+- When incrementing or decrementing a variable in a statement by itself, the prefix and postfix increment have the same effect, and the prefix and postfix decrement have the same effect.
+
+xi. Primitive Types
+
+- Java requires all variables to have a type.
+
+- Java uses Unicode characters and IEEE 754 floating-point numbers.
+
+
+
+Chapter 5, Control Statements: Part 2; Logical Operators 
+
+
+
+i. Essentials of Counter-Controlled Iteration
+
+- Counter-controlled iteration (p. 165) requires a control variable, the initial value of the control variable, the increment by which the control variable is modified each time through the loop (also known as each iteration of the loop) and the loop-continuation condition that determines whether looping should continue.
+
+- You can declare a variable and initialize it in the same statement.
+
+ii. a. for Iteration Statement
+
+- The while statement can be used to implement any counter-controlled loop.
+
+- The for statement (p. 166) specifies all the details of counter-controlled iteration in its header.
+
+- When the for statement begins executing, its control variable is declared and initialized. If the loop-continuation condition is initially true, the body executes. After executing the loop’s body, the increment expression executes. Then the loop-continuation test is performed again to determine whether the program should continue with the next iteration of the loop.
+
+- The general format of the for statement is
+
+for (initialization; loopContinuationCondition; increment) {
+statements
+}
+
+where the initialization expression names the loop’s control variable and provides its initial value, loopContinuationCondition determines whether the loop should continue executing and increment modifies the control variable’s value, so that the loop-continuation condition eventually becomes false. The two semicolons in the for header are required.
+
+- Most for statements can be represented with equivalent while statements as follows:
+
+initialization;
+while (loopContinuationCondition) {
+statements
+increment;
+}
+
+- Typically, for statements are used for counter-controlled iteration and while statements for sentinel-controlled iteration.
+
+- If the initialization expression in the for header declares the control variable, the control variable can be used only in that for statement—it will not exist outside the for statement.
+
+- The expressions in a for header are optional. If the loopContinuationCondition is omitted, Java assumes that it’s always true, thus creating an infinite loop. You might omit the initialization expression if the control variable is initialized before the loop. You might
+omit the increment expression if the increment is calculated with statements in the loop’s body or if no increment is needed.
+
+- A for’s increment expression acts as if it’s a standalone statement at the end of the for’s body.
+
+- A for statement can count downward by using a negative increment— i.e., a decrement (p. 169).
+
+- If the loop-continuation condition is initially false, the for statement’s body does not execute.
+
+b. Application: Compound-Interest Calculations
+
+- Java treats floating-point constants like 1000.0 and 0.05 as type double. Similarly, Java treats whole-number constants like 7 and -22 as type int.
+
+- The format specifier %4s outputs a String in a field width (p. 173) of 4 —that is, 4 character positions. If the value to be output has fewer characters, it’s right justified (p. 173) by default. If the value has more characters, the field width expands to accommodate the appropriate number of characters. To left justify (p. 173) the value, use a negative integer to specify the field width.
+
+- Math.pow(x, y) (p. 174) calculates the value of x raised to the yth power. The method receives two double arguments and returns a double value.
+
+- The comma (,) formatting flag (p. 174) in a format specifier indicates that a floating-point value should be output with a grouping separator (p. 174). The actual separator used is specific to the user’s locale (i.e., country). In the United States, the number will have commas separating every three digits and a decimal point separating the fractional part of the number, as in 1,234.45.
+
+- The . in a format specifier indicates that the integer to its right is the
+number’s precision.
+
+iii. do...while Iteration Statement
+
+- The do...while statement (p. 175) is similar to the while. In the while, the program tests the loop-continuation condition at the beginning of the loop, before executing its body; if the condition is false, the body never executes. The do...while statement tests the loop-continuation condition after executing the loop’s body; therefore, the body always
+executes at least once.
+
+iv. switch Multiple-Selection Statement
+
+- A switch statement (p. 176) performs different actions based on the possible values of a constant integral expression (a constant value of type byte, short, int or char, but not long), or a String.
+
+- The end-of-file indicator is a system-dependent keystroke combination that terminates user input. On UNIX/Linux/macOS systems, end-of-file is entered by typing the sequence <Ctrl> d on a line by itself. This notation means to simultaneously press both the Ctrl key and the d key. On
+Windows systems, enter end-of-file by typing <Ctrl> z.
+
+- Scanner method hasNext (p. 179) determines whether there’s more data to input. This method returns the boolean value true if there’s more data; otherwise, it returns false. As long as the end-of-file indicator has not been typed, method hasNext will return true.
+
+- The switch statement consists of a block that contains a sequence of case labels (p. 179) and an optional default case (p. 179).
+
+- In a switch, the program evaluates the controlling expression and compares its value with each case label. If a match occurs, the program executes the statements for that case.
+
+- Listing cases consecutively with no statements between them enables the cases to perform the same set of statements.
+
+- Every value you wish to test in a switch must be listed in a separate case label.
+
+- Each case can have multiple statements, and these need not be placed in braces.
+
+- A case’s statements typically end with a break (p. 180) that terminates the switch’s execution.
+
+- Without break statements, each time a match occurs in the switch, the statements for that case and subsequent cases execute until a break statement or the end of the switch is encountered.
+
+- If no match occurs between the controlling expression’s value and a case label, the optional default case executes. If no match occurs and the switch does not contain a default case, program control simply continues with the first statement after the switch.
+
+v. Class AutoPolicy Case Study: Strings in switch Statements
+
+- Strings can be used in a switch statement’s controlling expression and case labels.
+
+vi. a. break Statement
+
+- The break statement, when executed in a while, for, do...while or switch, causes immediate exit from that statement.
+
+b. continue Statement
+
+- The continue statement (p. 185), when executed in a while, for or do...while, skips the loop’s remaining body statements and proceeds with its next iteration. In while and do...while statements, the program evaluates the loop-continuation test immediately. In a for statement, the increment expression executes, then the program evaluates the loop-continuation test.
+
+vii. Logical Operators
+
+- Simple conditions are expressed in terms of the relational operators >, <, >= and <= and the equality operators == and !=, and each expression tests only one condition.
+
+- Logical operators (p. 187) enable you to form more complex conditions by combining simple conditions. The logical operators are && (conditional AND), || (conditional OR), & (boolean logical AND), | (boolean logical inclusive OR), ^ (boolean logical exclusive OR) and ! (logical NOT).
+
+a. Conditional AND (&&) Operator
+
+- To ensure that two conditions are both true, use the && (conditional AND) operator. If either or both of the simple conditions are false, the entire expression is false.
+
+b. Conditional OR (||) Operator
+
+- To ensure that either or both of two conditions are true, use the || (conditional OR) operator, which evaluates to true if either or both of its simple conditions are true.
+
+c. Short-Circuit Evaluation of Complex Conditions
+
+- A condition using && or || operators (p. 189) uses short-circuit evaluation (p. 189)—they’re evaluated only until it’s known whether the condition is true or false.
+
+d. Boolean Logical AND (&) and Boolean Logical Inclusive OR (|) Operators
+
+- The & and | operators (p. 189) work identically to the && and || operators but always evaluate both operands.
+
+e. Boolean Logical Exclusive OR (^)
+
+- A simple condition containing the boolean logical exclusive OR (^; p. 190) operator is true if and only if one of its operands is true and the other is false. If both operands are true or both are false, the entire condition is false. This operator is also guaranteed to evaluate both of its operands.
+
+f. Logical Negation (!) Operator
+
+- The unary ! (logical NOT; p. 190) operator “reverses” the value of a condition.
+
+
+
+Chapter 6, Methods: A Deeper Look 
+
+
+i. Introduction
+
+- Experience has shown that the best way to develop and maintain a large program is to construct it from small, simple pieces. This technique is called divide and conquer (p. 213).
+
+ii. Program Units in Java
+
+- Methods are declared within classes. Classes are typically grouped into packages so they can be imported and reused.
+
+- Methods allow you to modularize a program by separating its tasks into self-contained units. The statements in a method are written only once and hidden from other methods.
+
+- Using existing methods as building blocks to create new programs is a form of software reusability (p. 214) that allows you to avoid repeating  code within a program.
+
+iii. static Methods, static Fields and Class Math
+
+- A method call specifies the name of the method to call and provides the arguments that the called method requires to perform its task. When the method call completes, the method returns either a result, or simply control, to its caller.
+
+- A class may contain static methods to perform common tasks that do not require an object of the class. Any data a static method might require to perform its tasks can be sent to the method as arguments in a method call. A static method is called by specifying the name of the
+class in which the method is declared followed by a dot (.) and the method name, as in
+
+ClassName.methodName(arguments)
+
+- Class Math provides static methods for performing common mathematical calculations.
+
+- The constant Math.PI (3.141592653589793; p. 217) is the ratio of a circle’s circumference to its diameter. The constant Math.E (2.718281828459045; p. 217) is the base value for natural logarithms (calculated with static Math method log).
+
+- Math.PI and Math.E are declared with the modifiers public, final and static. Making them public allows you to use these fields in your own classes. A field declared with keyword final (p. 217) is constant—its value cannot be changed after it’s initialized. Both PI and E are declared final because their values never change. Making these fields static allows them to be accessed via the class name Math and a dot (.) separator, just like class Math’s methods.
+
+- All the objects of a class share one copy of the class’s static fields. Together the class variables (p. 217) and instance variables represent the fields of a class.
+
+- When you execute the Java Virtual Machine (JVM) with the java command, the JVM loads the class you specify and uses that class name to invoke method main. You can specify additional command-line arguments (p. 217) that the JVM will pass to your application.
+
+- You can place a main method in every class you declare—only the main method in the class you use to execute the application will be called by the java command.
+
+iv. Methods with Multiple Parameters
+
+- When a method is called, the program makes a copy of the method’s argument values and assigns them to the method’s corresponding parameters. When program control returns to the point in the program where the method was called, the method’s parameters are removed from memory.
+
+- A method can return at most one value, but the returned value could be a reference to an object that contains many values.
+
+- Variables should be declared as fields of a class only if they’re required for use in more than one method of the class or if the program should save their values between calls to the class’s methods.
+
+- A method specifies parameters in a comma-separated list. There must be one argument for each parameter. Also, each argument must be consistent with the type of the corresponding parameter. If a method does not accept arguments, the parameter list is empty.
+
+- Strings can be concatenated (p. 220) using operator +, which creates a new String containing the characters of the left operand followed by those of the right operand.
+
+- Every primitive value and object in Java can be represented as a String. When an object is concatenated with a String, the object is converted to a String, then the two Strings are concatenated.
+
+- If a boolean is concatenated with a String, the word "true" or the word "false" is used to represent the boolean value.
+
+- All objects in Java have a special method named toString that returns a String representation of the object’s contents. When an object is concatenated with a String, the JVM implicitly calls the object’s toString method to obtain the string representation of the object.
+
+- You can break large String literals into several smaller Strings and place them on multiple lines of code for readability, then reassemble the Strings using concatenation.
+
+v. Notes on Declaring and Using Methods
+
+- You’ve seen three ways to call a method—using a method name by itself to call another method of the same class; using a variable that contains a reference to an object, followed by a dot (.) and the method name to call a non-static method of the referenced object; and using the class name and a dot (.) to call a static method of a class.
+
+- A static method can call directly only other static methods of the same class and can manipulate directly only static variables in the same class.
+
+- There are three ways to return control to the statement that calls a method—when the method-ending right brace is reached in a method with return type void, when the following statement executes in a method with return type void:
+
+return;
+
+and when a method returns a result with a statement of the following form in which the expression is evaluated and its result (and control) are returned to the caller:
+
+return expression;
+
+vi. Method-Call Stack and Activation Records
+
+- Stacks are known as last-in, first-out (LIFO) data structures—the last item pushed (inserted) onto the stack is the first item popped (removed) from the stack.
+
+- A called method must know how to return to its caller, so the return address of the calling method is pushed onto the method-call stack when the method is called. If a series of method calls occurs, the successive return addresses are pushed onto the stack in last-in, first-out order so that the last method to execute will be the first to return to its caller.
+
+- The method-call stack contains the memory for the local variables used in each invocation of a method during a program’s execution. This data is known as the method call’s stack frame or activation record. When a method call is made, the stack frame for that method call is pushed onto the method-call stack. When the method returns to its caller, its stack frame is popped off the stack and the local variables are no longer known to the program.
+
+- If there are more method calls than can have their stack frames stored on the method-call stack, an error known as a stack overflow occurs. The application will compile correctly, but its execution causes a stack overflow.
+
+vii. Argument Promotion and Casting
+
+- Argument promotion (p. 223) converts an argument’s value to the type that the method expects to receive in its corresponding parameter.
+
+- Promotion rules (p. 223) apply to expressions containing values of two or more primitive types and to primitive-type values passed as arguments to methods. Each value is promoted to the “highest” type in the expression. In cases where information may be lost due to conversion, the Java compiler requires you to use a cast operator to explicitly force the conversion to occur.
+
+vii. Case Study: Secure Random-Number Generation
+
+- Objects of class SecureRandom (package java.security; p. 226) can produce nondeterministic random values.
+
+- SecureRandom method nextInt (p. 227) generates a random int value.
+
+- Class SecureRandom provides another version of method nextInt that receives an int argument and returns a value from 0 up to, but not including, the argument’s value.
+
+- Random numbers in a range (p. 227) can be generated with
+
+int number = shift + randomNumbers.nextInt(scale);
+
+where shift specifies the first number in the desired range of consecutive integers, and scale specifies how many numbers are in the range.
+
+- Random numbers can be chosen from nonconsecutive integer ranges, as in
+
+int number = shift + difference * randomNumbers.nextInt(scale
+
+where shift specifies the first number in the sequence, difference represents the difference between consecutive numbers in the sequence and scale specifies how many numbers are in the sequence.
+
+viii. Case Study: A Game of Chance; Introducing enum Types
+
+- An enum type (p. 234) is introduced by the keyword enum and a type name. As with any class, braces ({ and }) delimit the body of an enum declaration. Inside the braces is a comma-separated list of enum constants, each representing a unique value. The identifiers in an enum must be unique. Variables of an enum type can be assigned only constants of that enum type.
+
+- Constants can also be declared as private static final variables. Such constants are declared by convention with all capital letters to make them stand out in the program.
+
+ix. Scope of Declarations
+
+- Scope (p. 236) is the portion of the program in which an entity, such as a variable or a method, can be referred to by its name. Such an entity is said to be “in scope” for that portion of the program.
+
+- The scope of a parameter declaration is the body of the method in which the declaration appears.
+
+- The scope of a local-variable declaration is from the point at which the declaration appears to the end of that block.
+
+- The scope of a local-variable declaration that appears in the initialization section of a for statement’s header is the body of the for statement and the other expressions in the header.
+
+- The scope of a method or field of a class is the entire body of the class. This enables a class’s methods to use simple names to call the class’s other methods and to access the class’s fields.
+
+- Any block may contain variable declarations. If a local variable or parameter in a method has the same name as a field, the field is shadowed (p. 236) until the block terminates execution.
+
+x. Method Overloading
+
+- Java allows overloaded methods (p. 238) in a class, as long as the methods have different sets of parameters (determined by the number, order and types of the parameters).
+
+- Overloaded methods are distinguished by their signatures (p. 239)— combinations of the methods’ names and the number, types and order of their parameters, but not their return types.
+
+
+
+Chapter 7, Arrays and ArrayLists 
+
+
+
+
+
+
+
+
+
+Chapter 8, Classes and Objects: ADeeper Look 
+
+Chapter 9, Object-Oriented Programming: Inheritance 
+
+Chapter 10, Object-Oriented Programming: Polymorphism and Interfaces 
+
+Chapter 11, Exception Handling: ADeeper Look
+
+
+Chapter 14, Strings, Characters and Regular Expressions 
+
+Chapter 15, Files, Input/Output Streams, NIO and XML Serialization
+
+
+
+Chapter 16, Generic Collections 
+
+Chapter 17, Lambdas and Streams 
+
+Chapter 18, Recursion 
+
+Chapter 19, Searching, Sorting and Big O 
+
+Chapter 20, Generic Classes and Methods: A Deeper Look 
+
+Chapter 21, Custom Generic Data Structures
+
+Chapter 29, Java Persistence API (JPA)
+
+
+
+
+
+
+
+
+These are five design patterns commonly used in software development:
+	1	Abstract Factory Pattern: This pattern provides an interface for creating families of related or dependent objects without specifying their concrete classes. It allows the creation of objects that are related or dependent on each other while ensuring that the created objects are compatible with each other.
+	2	Builder Pattern: This pattern separates the construction of a complex object from its representation, allowing the same construction process to create different representations. It allows the creation of complex objects step by step and also ensures that the object is created consistently.
+	3	Factory Method Pattern: This pattern defines an interface for creating an object, but lets subclasses decide which class to instantiate. It allows the creation of objects without specifying their exact class, and it also makes the code more extensible.
+	4	Prototype Pattern: This pattern creates new objects by copying existing ones, without requiring knowledge of their specific classes. It allows the creation of new objects with the same properties as existing objects, thus avoiding the overhead of creating new objects from scratch.
+	5	Singleton Pattern: This pattern ensures that a class has only one instance, and provides a global point of access to that instance. It is used when a single instance of a class is required to coordinate actions across the system, and also to avoid the unnecessary creation of multiple instances of the same class.
+
+
+
+
+
+
+
+
+
+

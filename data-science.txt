@@ -1,0 +1,733 @@
+
+ARTIFICIAL INTELLIGENCE
+
+++++++++++++++++++++ Introduction to Text Mining and NLP
+
+What is Text Mining?
+
+- Text mining / Text analytics is the process of deriving meaningful information from natural language text
+- T.M usually involves the process of structuring the input text, deriving patterns within the structured data and finally evaluating and interpreting the output
+
+Need of T.M ?
+
+- with the advancement of technology, more and more data is available in digital form. among which, most of the data (approx. 85%) is in unstructured textual form.
+
+- so it has become essential to develop better techniques and algorithms to extract useful and interesting information from this large amount of textual data. hence, the area of text mining and info. extraction has become popular areas of research, to extract interesting and useful info.
+
+Text mining and NLP
+- as, T.M refers to the process of deriving high quality info. from the text. the overall goal is, essentially to turn text into data for analysis, via application of natural language processing (NLP)
+
+What is NLP?
+Basic structure of a NLP application?
+
+application layer	<=>	NLP layer		<-> Knowledge base
+								<-> data store
+
+- Knowledge base: it contains the database of info. that is used to equip chatbots with the info. needed to respond to queries of customers request.
+- data store: it contains interaction history of chatbot with users.
+- NLP layer: it translates user queries into information that can be used for appropriate responses
+- application layer: it is the application interface that is used to interact with the user.
+
+Application of NLP
+i. Messaging bots : a computer program that can interact with one or multiple humans through the chat interface of an online messaging platform
+ii. how to import text for text mining using python
+- reading external files - OS module
+	+ you can use the OS module in python to read external files based on your working directory. let’s check the code below to get the current working directory
+		import os
+		os.getcwd()
+	+ to change the current working directory
+		path = ‘D:\\NLP’
+		os.chdir(path)
+		os.getcwd()
+- reading text(.txt) files 
+	+ in order to read a text file, we’ll use the ‘open’ function in python and pass in the name of the text file
+	text_file = open(“textile.txt”, ‘r’)
+- writing .txt files
+	+ let us consider, you want to create a new text file within the working directory and write text into the same
+	text_file2 = Open(“demo_text_file.txt”, “w+”)
+	text_file2.write(’New demo\n’)
+	text_file2.close()
+	text_file3 = open(‘demo_text_file.txt’, ‘r’)
+- reading MS word(.docx) documents in python
+	+ let us consider, you want to import a word doc within the working directory :
+	import docx
+	doc = docx.Document(‘Demo_Word.docx’)
+	+ let us now check the total number of paragraphs within the working doc:
+	len(doc.paragraphs)
+	+ accessing text within the doc:
+	doc.paragraphs[0].text
+- accessing the paragraph
+	+ to access the number of sentences in the paragraph
+	len(doc.paragraphs[0].runs)
+	+ getting the specific sentences within the paragraph
+	doc.paragraphs[0].runs[0].text
+- add a new paragraph
+	+ consider, you want to add a new paragraph within a word doc, “iOS 11.4 is better than iOS beta”
+	len(doc.paragraphs[0].runs)
+	+ let’s recheck the number of paragraphs in the doc
+	len(doc.paragraphs)
+	+ save the updated word doc
+	doc.save(‘Demo_Word.docx’)
+- loading csv data into python as dataframes
+	+ data can be loaded into dataframes from input data stored in the csv format using the read_csv() function
+	table = pandas.read_csv(“/home/edupy/Datasets/USArrests.csv”)
+- adding a new column to an existing dataframe : a new column can be added to a DataFrame when the data is passed as a series.
+	import numpy as np
+	import pandas as pd
+	table = pd.read_csv(“data.csv”)
+	df2 = table[[‘id’, ‘diagnosis’]]
+	length = len(table)
+	df2[“new_column”] = pd.Series(np.random.randn(length), index=df2.index)
+- storing data in csv files
+	+ data present in dataframes can be written to a csv file using the to_csv() function
+	+ if the specified path doesn’t exist, a file of the same name is automatically created
+	table.to_csv(“/home/edupy/Datasets/USArrests2.csv”)
+ 
+Working on NLTK Corpora: Most popular library in python for NLP
+- setting the NLTK environment
+	+ open your cmd panel and install ’nltk’ using the following command
+	pip install nltk
+	+ enter the python console and import the ’nltk’ package
+- download all the packages using NLTK downloader
+	+ enter the nltk.download() command
+	+ click the ‘all’ tab within the downloader
+	+ click the ‘download’ tab
+
+NLTK Corpora
+- Corpora :
+	+ body of text containing collection of similar kind of documents
+	+ plural is ‘corpora’
+- document :
+	+ newspaper article, novel, patent, scientific paper
+	+ blog post, comment, status update, tweet
+- reading NLTK Corpora - example 1 : you can read the NLTK corpora data (stored within your local) with the following code
+	import os
+	import nltk
+	import nltk.corpus
+	print(os.listdir(nltk.data.find(“corpora”)))
+- accessing a document : let’s now try accessing a document from the corpora
+	nltk.corpus.gutenberg.fileids()
+- accessing the file
+	hamlet = nltk.corpus.gutenberg.words(’shakespeare-hamlet.txt’)
+- reading NLTK corpora - example 2
+	+ let’s check another corpora containing movie reviews
+	from nltk.corpus import movie_reviews
+	print(movie_reviews.categories())
+	+ let’s check the list of files under each category
+	print(len(movie_reviews.fileids(‘pos’)))
+	print(“ “)
+	print(movie_reviews.fileids(‘pos’))
+	+ let’s check words in one of the files
+	file = nltk.corpus.movie_reviews.words(‘pos/cv000_29590.txt’)
+	+ convert the above set of words in the form of paragraph
+	for word in file:
+		print(word, sep=‘ ‘, end=‘ ‘)
+
+
+++++++++++++++++++++ Extracting, cleaning and preprocessing text
+
+a. What is Tokenization?
+
+Tokenization : a process of breaking strings into tokens, which in turn are small structures or units that can be used for tokenization.
+
+Use of tokenization
+i. break a complex sentence into words
+ii. understand the importance of each of the words with respect to the sentence
+iii. produces a structural description on an input sentence
+
+tokenization - example
+- let’s consider a document of type string and understand the significance of its tokens	
+	gold = “””Gold is a chemical element with symbol…. “””
+	type(gold)
+- import the necessary libraries
+	import nltk
+	from nltk.tokenize import word_tokenize
+- now, we will run the word_tokenize function over the paragraph(‘word’) and assign it a name:
+	gold_word_tokenize = word_tokenize(gold)
+	
+exploring the tokens
+- let’s start by checking the number of tokens
+	len(gold_word_tokenize)
+
+NLTK’s FreqDist()
+
+	from nltk.probability import FreqDist
+	fdist = FreqDist()
+	for word in gold_word_tokenize:
+		fdist[word.lower()]+=1
+	fdist
+
+- suppose, if you were to select the top 10 tokens with highest frequency:
+
+	fdist_top10 = fdist.most_common(10)
+	fdist_top10
+
+Few other types of tokenizers
+
+i. regex tokenizer 
+- let’s use the regular expression tokenizer over the same string:
+	from nltk.tokenize import regexp_tokenize
+	regexp_tokenize(gold, pattern=‘\d+’)
+
+ii. blank line tokenizer
+- let’s use the blank line tokenizer over the same string to tokenizer the paragraph with respect to blank string
+	from nltk.tokenize import blankline_tokenize
+	gold_bl_tokenize = blankline_tokenize(gold)
+	len(gold_bl_tokenize)
+	gold_bl_tokenize[0]
+
+iii. sentence tokenizer
+- NLTK also has a straight forward function of creating tokens of sentence
+
+	from nltk.tokenize import sent_tokenize
+	gold_sent_tokenize = sent_tokenize(gold)
+	gold_sent_tokenize
+
+iv. bigrams, trigrams and Ngrams
+
+b. bigrams, trigrams and Ngrams
+
+- bigrams : tokens of 2 consecutive written words 
+	creating bigrams using NLTK
+	
+	from nltk.util import bigrams, trigrams, ngrams
+	#let us consider the below string for the example
+	string = “The mona lisa is ….”
+
+	+ let us first create tokens of the above string using the word_tokenize()
+
+	mona_lisa_tokens = nltk.word_tokenize(string)
+	mona_lisa_tokens
+
+	+ let us now create bigrams of the list containing tokens
+
+	mona_lisa_bigrams = list(nltk.bigrams(mona_lisa_tokens))
+	mona_lisa_bigrams
+
+- trigrams : tokens of 3 consecutive written words 
+	creating trigrams using NLTK
+	+ let us now create trigrams of the list containing tokens
+
+	mona_lisa_trigrams = list(nltk.trigrams(mona_lisa_tokens))
+	mona_lisa_trigrams
+
+- Ngrams : tokens of any number of consecutive written words
+	creating Ngrams using NLTK
+	+ let us now create Ngrams of the list containing tokens
+
+	mona_lisa_ngrams = list(nltk.ngrams(mona_lisa_tokens, 4))
+	mona_lisa_ngrams
+
+c. Stemming
+
+i. normalize words into its base form or root form
+ii. for example, the words fish, fishes and fishing all stem into fish
+iii. result may not be the ‘root’ word
+iv. common types of Stemming algorithms: Porter, Lancaster and Snowball
+
+Porter Stemmer with NLTK
+- let’s import Porter stemmer from NLTK
+	from nltk.stem import PorterStemmer
+	pst=PorterStemmer()
+- let’s use the stemmer for the word ‘having’
+	pst.stem(“having”)
+- using Porter Stemmer to stem a list of words
+	words_to_stem = [“give”, “giving”, “given”, “gave”]
+	for words in words_to_stem:
+		print(words+ “:” +pst.stem(words))
+
+Lancaster Stemmer
+- let’s try to stem the same using Lancaster stemmer
+	from nltk.stem import LancasterStemmer
+	lst = LancasterStemmer()
+	for words in words_to_stem:
+		print(words+ “:” +lst.stem(words))
+
+Snowball Stemmer
+- let’s try to stem, using the Snowball Stemmer
+	from nltk.stem import SnowballStemmer
+	sbst = SnowballStemmer(‘english’)
+- let’s check the list of languages snowball stemmer support
+	sbst.languages
+- now, stem the same using Snowball Stemmer
+	sbst.stem(‘having’)
+	for words in words_to_stem:
+		print(words+ “:” +sbst.stem(words))
+
+Compare: Porter, Lancaster and Snowball stemmers
+- create a function with Porter, Lancaster and Snowball Stemmers
+	def stemms(word):
+		print(“Porter:”+pst.stem(word))
+		print(“Lancaster:”+lst.stem(word))
+		print(“Snowball:”+sbst.stem(word))
+- check the stemms function on a word without ‘ing’:
+	stemms(‘data’)
+- check the stemms function on the word ‘curricula’
+	stemms(‘curricula’)
+
+d. Lemmatization
+
+- groups together different inflected forms of a word, called Lemma
+- somehow similar to stemming, as it maps several words into one common root
+- output of lemmatisation is a proper word
+- for example, a lemmatizes should map gone, going and went into go
+
+Lemmatization using NLTK
+- let’s import lemmatizes from NLTK:
+	from nltk.stem import word net
+	from nltk.stem import WordNetLemmatizer
+	word_lem = WordNetLemmatizer()
+- let’s check the lemmatizes on the word ‘corpora’
+	word_lem.lemmatize(‘corpora’)
+- let’s check the lemmatizes on the list of words used earlier
+	for words in words_to_stem:
+		print(words+ “:” +word_lem.lemmatize(words))
+
+e. StopWords
+
+- NLTK has its own list of Stopwords, you can use the same by importing it from nltk.corpus:
+	from nltk.corpus import stop words
+- let’s check the list of Stopwords in NLTK:
+	stopwords.words(‘english’)
+	len(stopwords.words(‘english’)
+
+StopWord removal
+- now, remember the list of top highest occurring words:
+	fdist_top10
+
+StopWord removal using the Re module
+	import re
+- now, we will use the compile() from the re module to create a string that matches any digit or special character
+	punctuation=re.compile(r’[-.?!,:;()|0-9]’)
+- now, we’ll create an empty list and append the words without any punctuation into the list:
+	post_punctuation=[]
+	for words in gold_word_tokenize:
+		word=punctuation.sub(“”, words)
+		if len(word)>:
+			post_punctuation.append(word)
+- you can create another list and append the words in post_punctuation [] within the list removing stopwords:
+	post_stop_words=[]
+	for words in post_punctuation:
+		words=words.lower()
+		if words not in stp_words:
+			post stop words.append(words)
+
+Check the effect of stop word removal
+- now, let’s compare the original list obtained as a result of Tokenization with the lists post_punctuation [] and post_stop_words []:
+	len(gold_word_tokenize)
+	len(post_punctuation) #list after removing punctuation
+	len(post_stop_words)
+	fdist2=FreqDist()
+
+Check the effect of stopword removal: Unique tokens
+- you can now check for the list of unique tokens in ‘gold_word_tokenize’:
+	for word in post_stop_words:
+		fdist2[word]+=1
+	len(fdist2)
+- checking the top 10 most frequent tokens with highest frequency:
+	fdist2.most_common(10)
+
+
+f. Parts of speech (POS) tagging
+
+Parts of speech (POS)
+i. generally speaking, the “grammatical type” of word: verb, noun, adjective, adverb, article etc
+ii. indicates, how a word functions in meaning as well as grammatically within the sentence
+iii. a word can have more than one part of speech based on the context in which it is used. for e.g.: “Google something on the internet”. Here google is used as a verb although it’s a proper noun.
+
+Need of POS tags
+- you can use it as a statistical NLP task
+- distinguishes the sense of a word
+- easy to evaluate( how many tags are correct?)
+- you can infer semantic information
+
+POS tagging using NLTK - example 1
+- let’s consider a string and check how NLTK performs POS tagging on it:
+	sent = “Mary is driving a big car.”
+	sent_tokens = word_tokenize(sent)
+- use the pos_tag() function from the NLTK library to tag the tokens
+	for token in sent_tokens:
+		print(nltk.pos_tag([token]))
+
+POS tagging using NLTK - example 2
+	sent2 = “John is eating a delicious cake”
+	sent2_tokens = word_tokenize(sent2)
+	for token in sent2_tokens:
+		print(nltk.pos_tag([token]))
+
+POS tagging using NLTK - example 3
+	sent3 = “Jim eats a banana”
+	sent3_tokens = word_tokenize(sent3)
+	for tokens in sent3_tokens:
+		print(nltk.pos_tag([tokens]))
+- now, let’s tokenize the same using regular expression tokenizer:
+	from nltk.tokenize import RegexpTokenizer
+	reg_tokenizer = RegexpTokenizer(‘(?u)\W+|\$[\d\.]+|\S+’)
+	regex_tokenize = reg_tokenizer.tokenize(sent3)
+	regex_tokenize
+- now, we will tag all the tokens and get a list of tag for all the tokens:
+	regex_tag = nltk.pos_tag(regex_tokenize)
+	regex_tag
+
+g. Named entity recognition (NER)
+
+What is NER?
+i. mix of tagging as well as chunking 
+ii. a part of IE (Information exchange)
+iii. automatic identification and counting of occurrences of named entities in a collection of information
+iv. associating the named entities to their appropriate types
+
+NER - an example
+	“Apple[i] CEO Tim Cook[ii] introduces 2 New, Large iPhones, Smart Watch at Cupertina[iii] Flint Center Event[iv]”   
+	i. Organization
+	ii. person
+	iii. location 
+	iv. organisation
+
+List of NER entities
+i. Facility
+ii. Geo-political entity
+iii. Geo-socio-political group
+iv. Location
+v. Organisation
+vi. Person
+
+NER in python
+
+NER in python - example 1
+- for using NER in python, you will have to import the “ne_chunk” from the NLTK module in python:
+	from nltk import ne_chunk
+- consider a text data:
+	NE_sent = “The US President stays in the White House”
+- now, let’s tokenize the sentence and also add part of speech tags to the same:
+	NE_tokens = word_tokenize(NE_sent)
+	NE_tags = nltk.pos_tag(NE_tokens)
+- now, we will use the ne_chunks () and pass the list of tuples containing POS tags to it:
+	NE_NER = ne_chunk(NE_tags)
+	print(NE_NER) 
+
+NER in python - example 2
+- let’s consider another text:
+	NE_sent2 = “Apple is a fruit and Apple is a Company’s name”
+	print(ne_chunk(nltk.pos_tag(word_tokenize(NE_sent2))))
+
+
+
+++++++++++++++++++++++++++++++++++++ Analyzing sentence structure
+
+a. Syntax tree
+
+What is a syntax?
+- Syntax is the study of rules governing the way words are combined to form sentences in a language
+- Sentences are composed of discrete units combined by rules
+
+Phrase structure rules
+i. S -> NP VP
+ii. NP -> {Det N, Pro, PN}
+iii. VP -> V(NP)(PP)(Adv)
+iv. PP -> P NP
+v. AP -> A(PP)
+
+Syntax tree : In layman’s terms 
+- Syntax tree is a tree representation of syntactic structure of sentences or strings.
+- consider a statement: “The old tree swayed in the wind”
+
+Rendering syntax trees  
+-in order to render syntax trees in your notebook, you need to install ‘ghostscript’ (a rendering engine) from the link: https://ghostscript.com/download/gsdnld.html
+
+Setting the environment variables
+- once you have downloaded and installed the file
+	-> go to the folder where it is installed -> open the bin folder -> add the path to the bin folder in your env. variables
+
+Modify the path env. variable
+- now, you will have to modify the path of env. variable through the piece of code:
+	import os
+	path_to_gs = “C:\\Program Files\\gs\\gs9.23\\bin”
+	os.environ[‘PATH’]+=os.pathsep + path_to_gs #modifying env. variable
+
+b. Chunking
+
+- chunking basically means picking up individual pieces of information and grouping them into bigger pieces
+- the bigger pieces are known as chunks
+- in the context of NLP, chunking means grouping of words/tokens into chunks
+- example :
+	We saw the yellow dog
+
+Chunking using python - example 1
+- let’s consider the sentence below:
+	sent = “The little mouse ate the fresh cheeze”
+- convert the sentence to tokens and pos tags to the same:
+	sent_tokens = nltk.pos_tag(word_tokenize(sent))
+	sent_tokens
+- we will now create a grammar from a noun phrase and will mention the tags that we want in our chunk phrase within {}, here we have created a regular expression matching string:
+	grammar_np = r”NP: {<DT>?<JJ>*<NN>}”
+- we will now have to parse the chunk, hence we’ll create a chunk parser and pass our noun phrase string to it:
+	chunk_parser = nltk.RegexpParser(grammar_np)
+- the parser is now ready, we will use the parse() within our chunk parser to parse our sentence:
+	chunk_result = chunk_parser.parse(sent_tokens)
+	chunk_result
+
+Chunking using python - example 2
+- let’s consider another sentence below:
+	sent2 = ’She is wearing a beautiful dress’
+- convert the sentence to tokens and add pos tags to the same:
+	sent_tokens2 = nltk.pos_tag(word_tokenize(sent2))
+- we will now have to parse the chunk, hence we’ll create a chunk parser and pass our noun phrase string to it:
+	chunk_result2 = chunk_parser.parse(sent_tokens2)
+	chunk_result2
+
+Chunking using python - example 3
+- let’s create a verb phrase chunk now using regular expressions:
+	grammar_vp = r”vp: {<PRP>?<VB | VBD | VBZ | VBG>*<RB | RBR>?}”
+- we’ll now create another chunk_parser and will pass the verb phrase string to it:
+	chunk_parser2 = nltk.RegexpParser(grammar_vp)
+- create another sentence and we will tokenize the same, adding pos tags to it:
+	sent3 = “She is walking quickly to the mall”
+	sent_token3 = nltk.pos_tag(word_tokenize(sent3))
+- we will use the new verb phrase parser to parse the tokens and run the results:
+	chunk_result3 = chunk_parser2.parse(sent_tokens3)
+	chunk_result3
+
+Chunking using python - example 4
+- let’s consider another sentence below and add speech tags to it, post tokenization:
+	sent4 = “He drives fast on highways”
+	sent_tokens4 = nltk.pos_tag(word_tokenize(sent4))
+- we will use the new verb phrase parser to parse the tokens and run the results:
+	chunk_result4 = chunk_parser2.parse(sent_tokens4)
+	chunk_result4
+
+c. What is Chinking?
+
+- under chinking, we create a sequence to tokens, which are not included in the chunk
+- help us define, what we want to exclude from a chunk
+
+Chinking using python
+
+Chinking - NLTK
+- Let’s create a chinking grammar string containing three things:
+	+ chunk name
+	+ the regular expression sequence of a chunk
+	+ the regular expression sequence of our chink
+
+chink_grammar = r”””
+	chk_name: #chunk name
+
+	( <PRP>?<VB | VBD | VBZ | VBG>*<RB | RBR>?} #chunk regex sequence
+	
+	} <RB>+{ #chink regex sequence - adverb
+“””
+
+- we will now create a parser from nltk.RegexpParser and will pass the chink_grammar to it:
+
+chink_parser = nltk.RegexpParser(chink_grammar)
+
+- now, let’s use the new chink parser to parse the tokens (sent3) and run the results:
+
+chink_parser.parse(sent_tokens3)
+
+
+d. Context free grammar (CFG)
+
+i. CFG in layman’s terms is a simple grammar, where certain rules describe possible combinations of words and phrases
+
+ii. CFG is a tuple with four values: (N, summation, R, S)
+	+ N, a finite set of terminal symbols
+	+ summation, is the alphabet, a finite set of terminal symbols
+	+ R is the set of production rules
+	+ S is the start of symbol Euro N
+
+CFG examples
+
+i. S -> NP VP
+
+- this says that there are units called S, NP and VP in this language. 
+- that an S consists of an NP followed immediately by a VP 
+- doesn’t say that that’s the only kind of S noe does it say that this is the only place that NPs and VPs occur
+
+ii. NP -> Det Nominal
+iii. Nominal -> Noun
+iv. VP -> Verb
+v. Det -> a
+vi. Noun -> flight
+vii. Verb -> left
+
+Implementing CFG’s in python
+
+- consider the below string, where we have laid certain rules:
+
+CFG_grammar = nltk.CFG.fromstring(“””
+
+S -> NP VP
+VP -> V N
+V -> “saw” | “met”
+NP -> “John” | “Jim”
+N -> “dog” | “cat”
+“””)
+
+- let’s check the possible list of sentences that can be generated using the rules:
+
+for sentence in generate(CFG_grammar):
+	print(“ “.join(sentence))
+
+- you can check the difference rules of grammar for the sentence formation using the productions():
+
+CFG_grammar.productions()
+
+Automating text paraphrasing in python
+
+- we will now create a function that will take sentence as input and will tokenize and tag it. also, we will define CFG for the same for sentence generation:
+
+def cfg_parse(sentence):
+	sent_tk = nltk.pos_tag(word_tokenize(sentence))
+	for one in sent_tk:
+		if one[1] == ‘NNP’:
+			s_NP = “\’” + one[0] + “\’”
+		if one[1] == ‘VBD’ or one[1] == ‘VBN’;
+			s_V = “\’” + one[0] + “\’”
+		if one[1] == ’NN’;
+			s_N = “\’” + one[0] + “\’”
+		else:
+			pass
+	cfg_grammar2 = nltk.CFG.fromstring(“””
+	S -> NP VP
+	VP -> V N
+	NP -> {}
+	V -> {}
+	N -> {}
+	“””.format(s_NP,s_V,s_N))
+
+Automating text paraphrasing in python - example 1
+
+for sentence in generate(cfg_grammar2):
+	print(“ “.join(sentence))
+	return 
+
+- let’s run the function and then try some sentences:
+
+cfg_parse(“John saw a long white boat”)
+
+Automating text paraphrasing in python - example 2
+
+- if we parse another sentence say, “John saw a cat”
+cfg_parse(“John saw a cat”)
+
+- let’s see what happens, if we change the sentence to passive voice:
+cfg_parse(“A cat was seen by John”)
+
+Automating text paraphrasing in python - example 3
+
+- The result changes, if we write ‘John’ as ‘john’ and cat as ‘Cat’:
+cfg_parse(“A Cat was seen by john”)
+
+nltk.pos_tag(word_tokenize(“A Cat was seen by john”))
+
+
+
+
+
+Text Classification - I
+
+
+Machine learning overview
+
+Introduction to machine learning 
+
+- Machine learning is a subset of artificial intelligence (AI) which provides systems/machines the ability to learn automatically & improve from experience without being explicitly programmed
+
+ML process flow
+
+
+								    Hyper-parameter tuning
+                                         => training    =>  Build models => training results
+												   |
+Historical data  =>  Feature Engineering => Validation  =>  Models  => Validation results
+												   |
+								 => Hold-out test => Tests results => compare models
+
+Types of machine learning
+
+i. Supervised learning
+
+predefined dataset => supervised learning => predictive model
+
+- consider, you have some text data which has to be classified into different classes as a result of it, it has to be converted into numerical data prior application of ML algorithm.
+
+
+
+The bag of words approach 
+
+- in common terms, it basically creates a list of all the unique words present across all the documents and then counts the frequency of each of these words appearing in the documents.
+
+- example: consider the below reviews
+	review_1 = ‘The movie was good and we really like it’
+	review_2 = ‘the movie was good but the ending was boring’
+	review_3 = ‘we did not like the movie as it was too lengthy’
+
+Creating tokens
+
+	import pandas as pd
+	import numpy as np
+	import nltk
+	from nltk import word_tokenize
+
+	review_1_tokens = word_tokenize(review_1)
+	review_2_tokens = word_tokenize(review_2)
+	review_3_tokens = word_tokenize(review_3)
+
+- we’ll now join all the three reviews by creating a set to get all the unique words across all the reviews:
+
+	review_tokens = 
+	set(review_1_tokens).union(set(review_2_tokens)).union(set(review_3_tokens))
+	len(review_tokens)
+	review_tokens
+
+Processing tokens
+
+- we’ll now create a dictionary where the keys will be the 18 tokens and the default value of each token will be 0
+
+	review1_dict = dict.fromkeys(review_tokens, 0)
+	review1_dict
+
+Adding counts to the tokens
+
+- create a for loop which for each of the tokens in the review will add 1 to the value of that token in the dictionary:
+
+	for token in review_1_tokens:
+		review1_dict[token]+=1
+- let’s check the same
+	review1_dict
+
+- repeat the same for review tokens 2 and 3
+
+	for token in review_2_tokens:
+		review2_dict[token]+=1
+
+	for token in review_3_tokens:
+		review3_dict[token]+=1
+
+- we will now create a pandas data frame for all the 3 dictionaries as 3 different rows and run the same
+
+Creating a consolidated dataFrame
+
+	reviews_Dict_DF = pd.DataFrame([review1_dict, review2_dict, review3_dict])
+
+Count Vectorization
+
+i. For each 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

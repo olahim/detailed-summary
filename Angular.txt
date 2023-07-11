@@ -1,0 +1,983 @@
+
++++++++++++++++++++++ Web-application development
+
+- a web app is an application program that is stored on a server and delivered over the internet through a browser
+
+- the most basic model for describing a web application is the client server architecture. The client establishes a connection to the server, makes request and then receives responses from the server.
+
+- client-side programming helps to build an applications front-end and server-side programming builds an applications backend
+
+- frontend development refers to constructing what users see when they load a web application - the content, design and how they interact with it.
+
+- backend development refers to the server side of an application, where you have to develop a business logic to manage the content, along with security and structure, in order to ensure that application remains operational.
+
+
++++++++++++++++++++++  Single page application (SPA)
+
+- SPA has a javascript layer that can freely communicate with web services on the server side
+
+- it’s made up of a single web page that is loaded once on the browser when you visit the website, making it faster and much more responsive.
+
+- the page that gets loaded first is called a layout page. the layout page is constant, there are some sections in the page that remain constant (like the header and footer) and generally only the content between this keeps changing.
+
+What is Angular?
+
+- Angular is client-side framework built using Typescript and helps to make web application using component-based structure.
+
+What is TypeScript?
+
+- Typescript is a superset of JavaScript ES6, with more features like classes, interface and objects
+
+- it does not run-on browser, so it is compiled to javascript with the help of CLI and node.js
+
+- as browsers understand only JavaScript, HTML and CSS
+
+Model-View-Controller (MVC) pattern
+
+- MVC is an architectural pattern commonly used for developing user interfaces that divides the application into three interconnected parts- model, view and controller
+
+	+ model : represents data. it retrieves, stores and maintains the data of the application in a database
+
+	+ view : is what you see when you visit a site. it sends the data to client i.e a web browser
+
+	+ controller : code that controls the interactions between model and view.
+
+Angular’s MVVM Pattern
+
+- in Angular we have two-way binding, that enables MVVM design pattern.
+
+- MVVM stands for Model, View and ViewModel
+
+- Controller in the MVC pattern is replaced by ViewModel in MVVM design pattern
+
+- like the controller, VM is responsible for maintaining relationship between view and model, but the difference here is , if we update anything in view, it gets updated in model and change anything in model, it gets updated in view, which is what we call two-way binding.
+
+Getting started with angular
+
+- node.js : provides a run time environment (RTE) for javascript
+
+	+ download nodejs from https://nodejs.org/en/ and install it
+
+- angular CLI : is a command line tool for building angular application
+
+	+ install the CLI using the npm package manager
+
+	+ npm is included with node.js, which was installed previously
+
+	+ check node and npm versions installed 
+
+		node -v
+
+		npm -v
+	
+	+ install the CLI using the npm package manager
+
+		npm install -g @angular/cli
+
+- visual studio code : source code editor which comes with built-in support for javascript, typescript and node.js
+
+-  create angular project with angular CLI
+
+	+ install angular CLI and create a project : angular CLI provides all required configuration files
+
+	+ Angular CLI has a built in HTTP server that we can use to run our app. To use it, head back to the terminal, and change directories into the root of our
+application.
+
+	+ create a new angular application :	ng new my-first-project
+
+	+ navigate to the folder :	cd my-first-project
+
+	+ start the web server and open the application in a browser :   ng serve
+
+	+ Our application is now running on localhost port 4200. Let’s open the browser and
+visit:
+		http://localhost:4200
+
+- understanding files in angular
+
+	+ angular.json : angular application starts executing from this file
+
+	+ package.json : configures npm package dependencies that are available to all projects in the workspace
+
+	+ src/app : contains project’s logic and data
+
+	+ src/assets : contains image and other asset files to be copied
+
+	+ src/index.html : main HTML page that is served when the application is loaded
+
+	+ src/main.ts : compilation starts from this file. Bootstraps the application’s root module (AppModule) to run in the browser.
+
+
++++++++++++++++++++++  Modules and Components
+
+Working of an angular application
+ 
+- an angular application starts executing from the angular.json, which defines all the standards and paths of the application.
+
+	+ it also defines which ‘main file’ and ‘index file’ to execute
+
+	+ compilation starts from the ‘main.ts’ file which bootstraps the application ( controls the startup)
+
+	+ AppModule in ‘main.ts’ refers to the app.module.ts
+
+	+ bootstrap passes the AppModule to the bootstrapModule method to start the Angular application
+
+- app.module.ts file lists all the components and services. all the files are declared under the @NgModule decorator
+
+- app.component.ts file contains the @Component decorator which will hold the template, styling files and a lot more
+
+	+ in an angular application, app.component is the root component
+
+What is a Module?
+
+- Module is a class that bundles the angular building blocks like components, directives, services and others together, so that angular is aware of all the features in the application.
+
+- a module consists of 
+
+	i. import : defines the files that are needed to be imported
+
+	ii. decorator : describes the metadata of the application.  
+
+	+ angular decorator is a function to attach metadata to a class, method, property or parameter
+
+	+ class decorators : are applied to classes and allow us to declare if a class is component, module etc @NgModule, @Component, @Injectable, @Directive
+
+	+ property decorators : are applied to properties within the classes. @Input, @Output, @ContentChild & @ContentChildren, @ViewChild & @ViewChildren, @HostBinding 
+
+	+ method decorators : are similar to property decorators but are used for methods instead
+
+	+ parameter decorators : are applied to the constructor parameter of the class
+
+	iii. export : describes the file that must be exposed to external environment
+
+- app module structure
+
+import { NgModule} from ‘@angular/core’;
+import { BrowserModule} from ‘@angular/platform-browser’;
+@NgModule({
+imports:	[ BrowserModule],	=>> to import other modules
+providers:	[ Logger],		=>> defines services that can be injected into this module’s views
+declarations:	[ AppComponent],	=>> declares views to make them privately available in this module
+exports:	[ AppComponent],	=>> makes the declared view public
+bootstrap:	[ AppComponent]	=>>   set to a root component that must be launched
+})
+export class AppModule { }
+
+Components
+
+- Components are the typescript classes that control a patch of screen that we call a view (UI) and declare reusable building blocks for an application.
+
+- What if we want to teach the browser new tags? What if we wanted to have a <weather> tag that shows the weather? Or what if we want to create a <login> tag that shows a login panel?
+
+- structure of a component
+
+	+ decorator section : used to configure the component, including selector name and HTML template
+
+	+ class section : defines the logic of the component
+
+- creating a component through CLI
+
+	+ ng generate component server1  	or 	ng g c server2 
+
+Template
+
+- a template is an HTML fragment that tells angular how to render an angular component
+
+
++++++++++++++++++++++  Databinding and Animations
+
+What is data binding?
+
+- Data binding is communication between the typescript code/business logic of the component and the template (UI)
+
+- classification of data binding 
+
+	+ one-way binding 
+
+	+ two-way binding
+
+- types of data binding
+
+	+ string interpolation : it is used when hardcoded data/value inside a component should be displayed directly on the view
+
+	+ property binding : binding data to the property of DOM element
+
+	+ event binding : handles user interaction with an application in the form of a mouse action
+
+	+ 2 way data binding :  combination of property and event binding. it is a continuous synchronization of data from view to the component and vice versa
+
+- types of component interaction
+
+	+ using @Input decorator : pass data from the parent component to the child component
+
+	+ using @Output decorator : pass data from the child component to the parent component
+
+	+ using services : when there is no parent child relation, we can use angular service
+
+	+ using routes : when there is no parent-child relation, angular router helps you switch from one view to the next as users perform tasks
+
+
+Animation
+
+- provides the illusion of motion
+
+- import “BrowserAnimationsModule” (in app module), which introduces the animation capabilities into an angular application
+
+- import animation functions from @angular/animations (in the component). in the component file, add a metadata property called animations and add triggers that define an animation to it.
+
+- animation metadata
+
+	+ duration : represents the time an animation takes to complete
+
+	+ delay : represents the time duration between the animation trigger and the beginning of the actual transition
+
+	+ easing : represents how the animation accelerates or decelerates during its execution
+
+- defining the trigger : animation trigger packages up the element states and transitions and assigns a name that can be used to apply the animation in a component.
+
+- lifecycle hooks : provide visibility into the key life moments of the component and the ability to act when they occur
+
+		=> create component => updates component => update component
+
+
++++++++++++++++++++++ Angular directives and pipes
+
+What are directives?
+
+- allow you to manipulate the DOM
+
+- when the template is rendered on the browser, the DOM elements/DOM tree gets changed according to the instructions given by directives.
+
+- more about directives
+
+	+ directives extend HTML with new attributes
+
+	+ transform DOM according to instructions
+
+	+ appear within HTML tag
+
+	+ modify javaScript classes
+
+types of directives
+
+i. components : is a directive with a template
+
+	+ @Component decorator is a @Directive decorator with template-oriented features
+
+ii. structural directives : are responsible for DOM manipulation in angular
+
+	+ it manipulate the DOM by adding, removing and replacing elements in the DOM
+
+	+ *ngIf : takes an expression and makes an entire chunk of DOM appear or disappear
+
+		<li *ngIf=“course, else falsecondition”>
+			<ng-template #falsecondition>
+
+	+ *ngFor : renders a template for each item in a collection
+
+		<li *ngFor=“let course of courses”></li>
+
+	+ *ngSwitch : shows a section of HTML only if it matches a certain value
+
+		<div [ngSwitch]=“courses”>
+			<p *ngSwitch=“ ‘aws’ “> AWS Architect </p>
+
+iii. attribute directives : change the appearance or behavior of components
+
+	+ look like regular HTML attributes 
+
+	+ ngClass : controls the appearance of elements by adding and removing CSS classes dynamically
+
+		<button [ngClass]=“{
+			‘btn1 btn-success’ : course.category === ‘Cloud Computing’,
+			‘btn btn-primary’ : course.category === ‘Front-end Development’,
+			‘btn btn-warning’ : course.category === ‘RPA’
+			}”>
+			{{ course.name }} ({{ course.category}})
+		</button>
+
+	+ ngStyle : allows you to set DOM element’s style properties, specified as colon-separated 
+key-value pairs
+
+		<div [ngStyle]=“{ ‘color’: color, ‘front-size’: size + ‘px’}”>
+			Style using ngStyle
+		</div>
+
+iv. custom directives : are directives to which @Directive decorator has been applied
+
+	+ it is imported from ‘@angular/core’ and is used when no additional template is needed
+
+	+ to create the directive class
+
+		ng generate directive ‘directive_name’
+
+Built-in and Custom pipes
+
+What are pipes?
+
+- pipes transform output in the template
+
+- it is denoted by the symbol ‘|’
+
+- it takes numbers, strings, arrays and date as input and converts them in the required format to display it on browser
+
+- built-pipes: applicable on string 
+
+	+ lowerCasePipe 
+
+	+ upperCasePipe
+
+	+ titleCasePipe
+
+	+ slicePipe
+
+- built-pipes: applicable on numbers
+
+	+ decimalPipe
+
+	+ percentPipe
+
+	+ currencyPipe
+
+	+ datePipe
+
+- pre-defined date format options
+
+	+ datePipe
+
+- chaining pipes : pipes can be chained to perform multiple operations within a single expression
+
+	+ you can simply chain pipes by adding a pipe symbol (|) after a pipe
+
+- custom pipes : helps us create our own pipe in case there is some functionality that we need that is not available in one of the built-in pipes
+
+	ng generate pipe custompipe 		ng g p custompipe
+
+- adding custom pipe to appModule
+
+	+ just like components and directives, pipes should also be added to declarations
+
+	+ you should also import the custom pipe in the app module
+
+	+ if you use the “ ng generate” command then this gets done automatically
+
+- PipeTransform interface and Transform function 
+
+	+ the @Pipe decorator and PipeTransform interface is imported from ‘@angular/core’
+
+	+ PipeTransform interface defines the transform function. the actual logic for the pipe is added in the transform function
+
+	+ it receives the value that needs to be transformed and a list of arguments  
+
+- pure and impure pipes
+
+	+ pure pipe : is a pipe that is executed when a pure change is detected
+
+	+ a pure change is either a change to a primitive input value  (String, number, boolean) or a changed object reference (array, date, object)
+
+	+ by default when we create a pipe, it is pure
+
+	+ impure pipe : is a pipe that is executed during every component change detection cycle.
+
+	+ they are executed even when source data is updated without a change to the object reference
+
+
+
++++++++++++++++++++++ Angular service and dependency injection
+
+What is a service?
+
+- a service in angular is used when you need to reuse data or logic across multiple
+
+	+ it’s a code piece that acts as a central repository or a central business unit where you can store and centralize code
+
+
+- what is dependency injection?
+
+	+ refers to one object supplying the dependencies of another object 
+
+- Using a service in angular
+
+	+ define service class 
+
+	+ define metadata : register the service with angular’s built-in @Injectable decorator. the @Injectable() decorator marks a service as a service that can be injected.
+
+	+ declare the service as dependency in the class
+
+- creating a service
+
+	ng generate service courses 	or	ng g s courses
+
+	+ two new files are created in the source folder
+
+	courses.service.spec.ts	&	courses.service.ts
+
+- injecting a service into another service
+
+	+ to inject a service in another service the @Injectable decorator is a must. the @Injectable decorator tells angular that this service itself might have injected dependencies.
+
+
++++++++++++++++++++++ Observables
+
+- Interaction with Back-end
+
+	+ a web application does not work standalone, the front-end must be able to connect with the back-end to store data, fetch data and do a lot more in the application
+
+- how does angular connect to a database?
+
+	+ we fetch or store data to a database using a server 
+
+	+ server here is an API, for example a REST API or GraphQL, created using server-side languages like Node.js or PHP
+
+	+ angular communicates with these API’s that are on the server and uses them to store and fetch data from the database
+
+- What is an Observable?
+
+	+ it’s a HTTP response that arrives asynchronously
+
+	+ it provide support for passing messages between publishers (send data/message) and subscribers (receives data/message) in an application.
+
+- relating milk example with our application
+
+	+ in our application we have two components that make use of courses service
+
+	+ the courses service makes a request to the database with the HTTP get call and as a response, we get back an Observable
+
+
+
++++++++++++++++++++++ RxJS and HTTPClient
+
+- RxJS library
+
+	+ RxJS is an external library that enables us to work with Observables in an angular application.
+
+	+ it is ‘Reactive extensions for javaScript’
+
+	+ it provides an implementation of the Observable and also provides functions and operators which can be used for
+
+- RxJS functions and operators
+
+	+ RxJS provides operators and functions that modify an Observable and return a new Observable
+
+	+ operators are pure functions, they do not change the existing Observable.
+
+	+ functions include :- of, from, pipe, throwError, interval, merge
+
+	+ operators include :- map, find, take, filter, concat, catchError
+
+- HttpClient
+
+	+ most front-end applications communicate with back-end services over the HTTP protocol
+
+	+ it performs HTTP requests
+
+	+ this service is available as an injectable class and contains methods to perform HTTP requests
+
+	+ modern browsers support two different APIs for making HTTP requests
+
+	i. fetch() API
+
+	ii. XMLHttpRequest interface
+
+- setup HttpClient
+
+	+ you need to import the HttpClientModule in the app.module.ts
+
+	+ add HttpClientModule to the imports array
+
+	+ by importing the HttpClient module, we are also registering the HTTP service with angular’s injector
+
+	+ to use HttpClient in service class, we declare it as a dependency in the constructor
+
+	+ we also need to import HttpClient from ‘@angular/common/http’
+
+	+ we now have a local variable http which we can use to refer to an instance of HttpClient
+
+- fetching data using HTTP
+
+	+ under assets create a new folder named data and inside this folder create courses.json file that contains courses data.
+
+	+ get request 
+
+	+ create a observable
+
+	+ subscribe to the observable
+
+	+ output
+
+- handling HTTP errors
+
+	+ import catchError
+
+	+ create error handler method
+
+	+ subscribe to the error
+
+	+ output
+
+
+
+
+
++++++++++++++++++++++ Angular routes and navigation
+
+What is router?
+
+- angular router allows us to switch from one view to another as users perform application tasks.
+
+	+ it enables developers to build Single Page Applications with multiple views and allows navigation between these components
+
+Why do we need routers?
+
+- in traditional web application, when the users types a URL in the browser, a HTTP request is sent to the server, which then retrieves the HTML page.
+
+- in case of SPA we do not load the whole application, we are only loading a part of the application. 
+
+	+ this done with the help of angular routers
+
+Setting up routes
+
+- base href
+
+	+ every angular app, in order to compose the links inside the app, should have base href defined at the parent level like index.html
+
+- router terms
+
+	+ Routes : defines an array of Routes, each mapping a URL path to a component
+
+	+ Router : provides component navigation
+
+	+ RouterLink : directive for binding a clickable HTML element to a route
+
+	+ RouterOutlet : directive that marks where the router the router displays a view
+
+- defining and registering routes
+
+	+ to add routes, go to app.module.ts and import {Routes} from ‘@angular/router’
+
+	+ define all the routes in the app module
+
+	+ create a constant of type Routes that accepts JavaScript objects and initialize this constant with all the routes that we want to add
+
+- rendering component using RouterOutlet
+
+	+ in the app.component.html, add the routes that have been created
+
+	+ specify the area where the component must be rendered using <router-outlet>
+
+- route properties
+
+	+ path, component, redirectTo, pathMatch, children, outlet, canActivate, canDeactivate, 
+
+- adding routes using RouterLink
+
+	+ navigating using href is not the best practice since it reloads the app on every navigation and the whole application state will be lost
+
+	+ angular provides routerLink directive to navigate to different components
+
+	+ routerLink allows to render or load a particular component for which the route has been requested
+
+	<li ><a routerLink=“/“>Home</a></li>
+	<li ><a routerLink=“/blog“>Blog</a></li>
+
+
+- using RouterLinkActive
+
+	+ to signify which tab is currently active, use routerLinkActive directive and set it to active class
+
+	<li routerLinkActive=“active”><a routerLink=“/“>Home</a></li>
+	<li routerLinkActive=“active”><a routerLink=“/blog“>Blog</a></li>
+
+- wildcard and redirecting routes
+
+	+ wildcard routes intercept invalid URLs. if a user navigates to a route that is not configured, the application will navigate to a wildcard route.
+
+	+ configuring wildcard routes
+
+	i. create ErrorComponent
+
+	ii. add the wildcard route to the routes array. in the path property use ‘**’
+
+- navigating programmatically
+
+	+ adding a route or navigation in business logic programmatically is nothing but triggering a navigation from the typescript code in case of an event (click of a button)
+
+- passing route parameters
+
+	+ create two new components: ‘courses and course-detail’
+
+	+ in the application code add a route to the ‘courses’ component
+
+	+ the courses component has an array of courses and each course is associated with an id
+
+	+ when we click on a course it navigates to ‘course-detail component’, and passes the id of the courses component as route parameter
+
+- child routes
+
+	+ in an angular application, some routes may only be viewed within another route. in such a scenario, we create child routes. the child routes of a route can be defined using the property called children.
+
+	{path: ‘blog’, component: BlogComponent,
+		children:[
+			{path:’newblogs’, component:NewblogsCompont},
+			{path:’otherblogs’, component:OtherblogsCompont},
+		]
+		},
+	{path: ‘about’, component: AboutComponent},	
+	
+- what are route guards?
+
+	+ route guards allow you to guard access to certain route
+
+
+
++++++++++++++++++++++ Handling forms in angular
+
+- Angular forms
+
+	+ forms are used to handle user input. they are the main building blocks to gather, capture and process data provided by the users.
+
+	+ they are used to log-in, submit request, place an order, book a flight, schedule a meeting, and perform other data-entry tasks.
+
+	+ since we are creating a single page application, we cannot submit the form directly, instead we handle the form through angular.
+
+- types of forms
+
+	i. template-driven forms
+
+	+ emphasize on developing forms that are programmed in the component’s template using directives
+
+	+ template defines the structure of the form, the format of its fields and the validation rules
+
+	+ make heavy use of the ngModel directive
+
+	+ FormsModule adds the capability of accessing the following directives
+
+		a. ngForm : directive represents the entire form
+
+		b. ngModel : directive is used for two-way data binding
+
+		c. ngModelGroup : represents a part of the form and allows to group form fields together
+
+	ii. reactive forms
+
+	+ explicitly create the model object in typeScript code and then link the HTML template elements to the model using directives
+
+	+ we construct the form model object explicitly using the FormControl, FormGroup and FormArray classes.
+
+
+
+
+Validating angular forms
+
+What is form validation?
+
+- Form validation helps to ensure that the data entered is in the right format and within the constraints imposed by the different
+
+Types of form validation
+
+i. client-side validation : is the validation that occurs in the browser and is more user-friendly as it gives an instant response.
+
+	+ you can either use a built-in validator or code the validation rule
+
+ii. server-side validation : takes place on the server after the data is submitted
+
+	+ the server-side code is used to validate the data before saving the data in the database
+
+- Why is client-side validation important
+
+	+ client-side validation is an initial check that helps to catch invalid data before it is sent to the server to avoid delay
+
+	+ if data is sent to the server and the validation fails, a response will be sent back to the client with corrections to be made by the user. a lot of time is consumed in this process
+
+- built-in validator : the validator class from @angular/forms provides a set of built-in validators that can be used by form controls. 
+
+	i. min : requires the value of the control to be greater than or equal to the provided number
+
+	+ use ‘Validators.min’ in reactive form and ‘min’ directive in the template for template-driven forms
+
+	ii. max : requires the value of the control to be less than or equal to the provided number.
+
+	iii. required : requires the value of control to be non-empty
+
+	iv. requiredTrue : is typically used for checkboxes and requires the value of control to be true
+
+	v. email : requires the control value to match a valid email pattern
+
+	vi. minLength : requires the length of the control value to be greater than or equal to the provided minimum length
+
+	vii. maxLength : requires the length of the control value to be less than or equal to the provided maximum length
+
+	viii. pattern : requires the control value to match a regular expression
+
+- form control status
+
+	i. value : reports the current value of the control if it is present, otherwise returns null
+
+	ii. status : reports the validation status of the control. there are 5 possible status values include valid, invalid, pending, disabled, enabled
+
+	iii. errors : reports the validation errors of the control
+
+	iv. pristine : reports if the control is pristine, meaning the user has not yet changed the value in the UI
+
+	v. dirty : reports if the control is dirty, meaning the user has changed the value in the UI
+
+	vi. touched : a control is marked as ’touched’ if the user clicks on the control and then loses focus and focuses on something else
+
+	vii. untouched : while the focus remains in the control, it still untouched
+
+	viii. valueChanges : returns an Observable that emits latest values when the value of the control changes either programmatically or using UI
+
+	ix. statusChanges : returns an Observable that emits an event when the validation status of the control is recalculated
+
+	x. updateOn : reports the update strategy
+
+
+
+
+
+
+
+
++++++++++++++++++++++ Authentication with JWT and Security
+
+What is Authentication?
+
+- Authentication is a means of verifying the identity of a user.
+
+	+ it allows you to check if the user can access the application or not
+
+	i. authentication : is the process of validating user credentials to gain user access. it confirms users’ identity to grant access to the system.
+
+	ii. authorization : is the process of determining whether the authenticated user has access to the resource. it is done after successful authentication.
+
+- How authentication works?
+
+	+ the application client sends authorization requests to the authentication setup
+
+	+ when authorization is granted, the authentication setup grants access to the client
+
+	+ the application client accesses the application or a protected resource in the application
+
+- Types of authentication
+
+	i. cookie-based authentication : involves setting the browser cookie to track the user authentication session. it is stateful, an authentication record or session is kept on both server and client-side. steps involved include :- 
+
+	+ user enters the login credentials
+
+	+ server verifies if the credentials are correct and creates a session which is then stored in a database
+
+	+ a cookie with the session ID is placed in the user’s browser
+
+	+ on subsequent requests, the session ID is verified against the database and if valid, the request is processed
+
+	+ once a user log out of the app, the session is destroyed on both client and server side
+
+	ii. token-based authentication : involves sending a token with each request instead of cookie to verify the authenticity of the request. it is stateless, the server does not keep a record of which users are logged in. steps involved include :-
+
+	+ user enters the login credentials
+
+	+ server verifies if the credentials are correct and returns a signed token. subsequent requests to the server include this token
+
+	+ this token is stored on the client-side, most commonly in localStorage - but can be stored in sessionStorage or a cookie as well
+
+	+ the server decodes the token and if the token is valid, it processes the request
+
+	+ once a user logs out, the token is destroyed on the client-side. no interaction with the server is necessary
+
+- where to store tokens : localStorage, cookie, sessionStorage
+
+What is JWT?
+
+- JSON Web Token (JWT) defines a compact and self-contained way for securely transmitting information between client and server as a JSON object.
+
+- JWT structure :
+
+	+ Header : it consists of the type of the token (JWT) and the signing algorithm being used, such as HMAC SHA256 or RSA
+
+		{“typ” : “JWT”, “alg” : “HS256”, } 
+
+	+ payload : it contains claims, which are pieces of informations about an entity.
+
+		{ “sub” : “1234567890”, “name” : “John Doe”, “admin” : true }
+
+	+ signature : is used to verify any changes in the message along the way. signature is created by encoded header, encoded payload, a secret key and a signing algorithm.
+
+- Authentication in an angular application
+
+	i. JWT : are used for securely transmitting information between client and server as a JSON object
+
+	ii. Client & storage : client is the user operating on a browser and for every registered user, there is a username and password stored in the database.
+
+	+ two most important types of storage properties of any browser are localStorage and sessionStorage.
+
+	iii. Backend : helps us validate the user credentials and generate response.
+
+	iv. Auth service : is used to log in and log out from the application
+
+	+ it validates the credentials (username and password) of the client with the backend and checks for the response, if it has JWT token
+
+	+ if the response from the backend has a JWT token with status 200, then the authentication is successful
+
+	v. User service : targets ‘/users’ API and fetches data of all the users present in the database
+
+	vi. JWT interceptor : intercepts the incoming requests from the application/user and adds JWT token  to the request’s Authorization header, only if the user is logged in 
+
+	vii. Auth guard : ensures that only authenticated users access specific routes in the application
+
+	viii. Error interceptor : intercepts the responses from the API and checks for the status codes
+
+- Security threats
+
+	i. signature stripping : a common method for attacking a signed JWT is by removing the signature or signature stripping
+
+	ii. cross-site request forgery (CSRF) : this attacks attempt to perform requests against sites where the hacker is logged in by tricking the user’s browser into sending a request.
+
+	iii. cross-site scripting (XSS) : this attacks attempt to inject javaScript in trusted sites. injected javaScript can then steal tokens from cookies and localStorage.
+
+
+
+
+
++++++++++++++++++++++ Testing and Application deployment in Angular
+
+Software testing
+
+- It’s a process, to evaluate the functionality of a software application, with an intent to find whether the developed software met the specified requirements or not.
+
+Types of testing 
+
+i. Unit testing : is used to test the small pieces of an independent code	
+
+	+ used to prevent regressions (bugs that occur repeatedly)
+
+	+ easy to pinpoint and fix the problem
+
+	+ popular tool to perform unit testing on angular app is Jasmine
+
+ii. Functional testing : are made against combinations of many units
+
+	+ you can use any number of external objects or systems like database, UI, security and other application layers
+
+	+ represents major releases whereas unit test represents only minor changes
+
+	+ e.g when user enters username, password and clicks on send, that user will be logged in.
+
+iii. Integration testing : ensures that the entire system application is working correctly
+
+	+ it can be executed only within a realistic environment like a real databases, servers, and other systems which are like the target production environment
+
+Testing angular applications
+
+- there are 2 forms of testing for an angular application
+
+i. Unit testing : refers to testing the business logic of small and isolated unit of code to verify the correctness of its behavior
+
+	+ e.g Jasmine, Mocha
+
+ii. End-to-end testing : simulates user actions (such as button clicks) and checks whether the application behaves as expected
+
+	+ e.g Protractor
+
+Jasmine and Karma
+
+- Jasmine is a behavior-driven development framework for testing JavaScript code.
+
+- even though jasmine comes with its own browser-based test runner, we will be using a command-line-based test runner called Karma that can be easily integrated into the application
+
+- Karma is used for testing JavaScript code written with or without framework.
+
+	+ it can run tests to check whether the application works properly in multiple browsers
+
+- Angular-application setup comes bundled with jasmine, so there is no need  to install it separately.
+
+Running application on production server - Nginx
+
+What is Nginx?
+
+- Nginx is a web server software that allows you to significantly reduce page load time.
+
+	+ an open source software that provides HTTP server capabilities
+
+	+ mainly used for reverse proxying, caching and load balancing
+
+	+ designed for maximum performance and stability
+
+	+ uses a non-threaded and event-driven architecture
+
+- architecture of nginx
+
+	+ nginx uses master-slave architecture by supporting event-driven, asynchronous and non-blocking model
+
+	+ worker processors accepts the requests and starts processing the requests
+
+	+ Master is responsible for reading and validating configuration. it is also responsible for starting, stopping and processing the worker
+
+	+ cache loader is responsible for checking on disk cache items and populating engines in memory database with cache metadata
+
+	+ cache manager is responsible for cache expiration and invalidation
+
+
+
+
+
+
+Points
+
+- the ViewChild decorator is used to get a reference to a child component, directive, or DOM element from a parent component.
+
+- you can wire up a FormControl to a native DOM input element using the formControlName directive
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

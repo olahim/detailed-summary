@@ -1,0 +1,10 @@
+
+1. Sure, here's an example of a CI/CD pipeline script on Jenkins that retrieves code from a GitHub repository, builds it, runs tests, stores the artifacts in a Nexus repository, creates Docker images, stores them in Docker Hub, and deploys them to Kubernetes:
+
+2. step by step guide to create k8 orchestration
+
+3. interview questions for Senior Java developer with answer
+
+4. a step-by-step guide with code to developing an Android chatting application using Angular, Java, Spring Boot and spring security
+
+5. 

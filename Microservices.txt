@@ -1,0 +1,1010 @@
+
+1 Escaping monolithic hell 
+
++++++++++++ The slow march toward monolithic hell 
+
+- The architecture of the FTGO application 
+
+- The benefits of the monolithic architecture 
+
+++++++++++ Why this book is relevant to you
+
+- All you need is to be familiar with the basics of enterprise application architecture and design. In particular, you need to know the following:
+	+ Three-tier architecture
+	+ Web application design
+	+ How to develop business logic using object-oriented design
+	+ How to use an RDBMS: SQL and ACID transactions
+	+ How to use interprocess communication using a message broker and REST APIs
+	+ Security, including authentication and authorization
+
+++++++++++ What you’ll learn in this book
+
+++++++++++ Microservice architecture to the rescue
+
+- Scale cube and microservices 
+
+- Microservices as a form of modularity 
+
+- Each service has its own database 
+
+- The FTGO microservice architecture 
+
+- Comparing the microservice architecture and SOA 
+
+
++++++++++++Benefits and drawbacks of the microservice architecture
+
+- Benefits of the microservice architecture
+
+- Drawbacks of the microservice architecture 
+
+
+1.6 The Microservice architecture pattern language 
+
+1.7 Beyond microservices: Process and organization 
+
+
+
+2 Decomposition strategies 
+
+++++++++++++ What is the microservice architecture exactly? 
+
+- What is software architecture and why does it matter? 
+
+- Overview of architectural styles 
+	+ THE LAYERED ARCHITECTURAL STYLE
+	+ ABOUT THE HEXAGONAL ARCHITECTURE STYLE
+
+- The microservice architecture is an architectural style 
+	+ WHAT IS A SERVICE? 
+	+ WHAT IS LOOSE COUPLING?
+	+ THE ROLE OF SHARED LIBRARIES
+	+ THE SIZE OF A SERVICE IS MOSTLY UNIMPORTANT
+
+
++++++++++++++ Defining an application’s microservice architecture 44
+
+- Identifying the system operations 
+
+- Defining services by applying the Decompose by business capability pattern 
+
+- Defining services by applying the Decompose by sub-domain pattern 
+
+- Decomposition guidelines 
+
+- Obstacles to decomposing an application into services 
+	+ Network latency
+	+ Reduced availability due to synchronous communication
+	+ Maintaining data consistency across services
+	+ Obtaining a consistent view of the data
+	+ God classes preventing decomposition
+
+- Defining service APIs 
+
+
+
+
+
+
+3 Interprocess communication in a microservice architecture 
+
++++++++++++++ Overview of interprocess communication in a microservice architecture 
+- Interaction styles 
+- Defining APIs in a microservice architecture 
+- Evolving APIs 
+	+ USE SEMANTIC VERSIONING
+	+ MAKING MINOR, BACKWARD-COMPATIBLE CHANGES
+	+ MAKING MAJOR, BREAKING CHANGES
+- Message formats 
+	+ TEXT-BASED MESSAGE FORMATS
+	+ BINARY MESSAGE FORMATS
+
++++++++++++++ Communicating using the synchronous Remote procedure invocation pattern 
+- Using REST 
+	+ THE REST MATURITY MODEL
+	+ SPECIFYING REST APIS
+	+ THE CHALLENGE OF FETCHING MULTIPLE RESOURCES IN A SINGLE REQUEST
+	+ THE CHALLENGE OF MAPPING OPERATIONS TO HTTP VERBS
+	+ BENEFITS AND DRAWBACKS OF REST
+- Using gRPC 
+- Handling partial failure using the Circuit breaker pattern
+	+ DEVELOPING ROBUST RPI PROXIES
+	+ RECOVERING FROM AN UNAVAILABLE SERVICE 
+- Using service discovery 
+	+ OVERVIEW OF SERVICE DISCOVERY
+	+ APPLYING THE APPLICATION-LEVEL SERVICE DISCOVERY PATTERNS
+	+ APPLYING THE PLATFORM-PROVIDED SERVICE DISCOVERY PATTERNS
+
++++++++++++++ Communicating using the Asynchronous messaging pattern
+- Overview of messaging 
+	+ ABOUT MESSAGES
+	+ ABOUT MESSAGE CHANNELS
+- Implementing the interaction styles using messaging 
+	+ IMPLEMENTING REQUEST/RESPONSE AND ASYNCHRONOUS REQUEST/RESPONSE
+	+ IMPLEMENTING ONE-WAY NOTIFICATIONS
+	+ IMPLEMENTING PUBLISH/SUBSCRIBE
+	+ IMPLEMENTING PUBLISH/ASYNC RESPONSES
+- Creating an API specification for a messaging-based service API 
+	+ DOCUMENTING ASYNCHRONOUS OPERATIONS
+	+ DOCUMENTING PUBLISHED EVENTS
+- Using a message broker 
+	+ BROKERLESS MESSAGING
+	+ OVERVIEW OF BROKER-BASED MESSAGING
+	+ IMPLEMENTING MESSAGE CHANNELS USING A MESSAGE BROKER
+	+ BENEFITS AND DRAWBACKS OF BROKER-BASED MESSAGING
+- Competing receivers and message ordering 
+- Handling duplicate messages 
+	+ WRITING IDEMPOTENT MESSAGE HANDLERS
+	+ TRACKING MESSAGES AND DISCARDING DUPLICATES
+- Transactional messaging 
+	+ USING A DATABASE TABLE AS A MESSAGE QUEUE
+	+ PUBLISHING EVENTS BY USING THE POLLING PUBLISHER PATTERN
+	
+- Libraries and frameworks for messaging 
+	+ BASIC MESSAGING
+	+ DOMAIN EVENT PUBLISHING
+	+ COMMAND/REPLY-BASED MESSAGING
+
+
++++++++++++++ Using asynchronous messaging to improve availability 
+- Synchronous communication reduces availability 
+- Eliminating synchronous interaction
+
+
+
+
+
+
+
+
+
+
+
++++++++++++++ Interprocess communication in a microservice architecture
+
+- FTGO developers generally don’t need to think about IPC unless they’re working on the REST API or the modules that integrate with cloud services.
+
+- Those services must often collaborate in order to handle a request.  Because service instances are typically processes running on multiple machines, they must interact using IPC.
+
+-  The choice of IPC mechanism is an important architectural decision. It can impact application availability. 
+
+-  I favor an architecture consisting of loosely coupled services that communicate with one another using asynchronous messaging. Synchronous protocols such as REST are used mostly to communicate with other applications.
+
+1. Overview of interprocess communication in a microservice architecture
+
+- There are lots of different IPC technologies to choose from
+
+	+ Services can use synchronous request/response-based communication mechanisms, such as HTTP based REST or gRPC.
+
+	+ Alternatively, they can use asynchronous, message-based communication mechanisms such as AMQP or STOMP.
+
+- There are also a variety of different messages formats.
+
+	+ text-based formats such as JSON or XML
+		
+	+ binary format such as Avro or Protocol Buffers
+
+Interaction styles
+
+- It’s useful to first think about the style of interaction between a service and its clients before selecting an IPC mechanism for a service’s API
+
+-  the choice of interaction style impacts the availability of your application
+
+- There are a variety of client-service interaction styles.
+
+	+ The first dimension
+
+		One-to-one—Each client request is processed by exactly one service. 
+
+		One-to-many—Each request is processed by multiple services.
+
+	+ The second dimension
+
+		Synchronous—The client expects a timely response from the service and might even block while it waits. 
+
+		Asynchronous—The client doesn’t block, and the response, if any, isn’t necessarily sent immediately.
+
+- The following are the different types of one-to-one / one-to-many interactions:
+
+
+	+ Request/response—A service client makes a request to a service and waits for a response.  It might even block while waiting. 
+
+	+ Asynchronous request/response—A service client sends a request to a service, which replies asynchronously. The client doesn’t block while waiting.
+
+	+ One-way notifications—A service client sends a request to a service, but no reply is expected or sent.
+
+	+ Publish/subscribe—A client publishes a notification message, which is consumed by zero or more interested services.
+
+	+ Publish/async responses—A client publishes a request message and then waits for a certain amount of time for responses from interested services.
+
+
+Defining APIs in a microservice architecture
+
+- APIs or interfaces are central to software development. An application is comprised of modules. Each module has an interface that defines the set of operations that module’s clients can invoke. 
+
+- a service’s API consists of operations, which clients can invoke, and events, which are published by the service. 
+
+- An operation has a name, parameters, and a return type. An event has a type and a set of fields
+
+- The nature of the API definition depends on which IPC mechanism you’re using.
+ 
+	+  if you’re using messaging, the API consists of the message channels, the message types, and the message formats.
+
+	+ If you’re using HTTP, the API consists of the URLs, the HTTP verbs, and the request and response formats.
+
+
+2. Communicating using the synchronous Remote procedure invocation (RPI) pattern
+
+- When using a remote procedure invocation-based IPC mechanism, a client sends a request to a service, and the service processes the request and sends back a response.
+
+- Some clients may block waiting for a response, and others might have a reactive, nonblocking architecture. But unlike when using messaging, the client assumes that the response will arrive in a timely fashion.
+
+Using REST
+
+- REST is an IPC mechanism that (almost always) uses HTTP.
+
+- A key concept in REST is a resource, which typically represents a single business object, such as a Customer or Product, or a collection of business objects.
+
+- REST uses the HTTP verbs for manipulating resources, which are referenced using a URL.
+
+	+ a GET request returns the representation of a resource
+
+	+ a POST request creates a new resource
+
+	+  a PUT request updates a resource
+
+- you must define your APIs using an interface definition language (IDL). The most popular REST IDL is the Open API Specification (www.openapis.org), which evolved from the Swagger open source project.
+
+- The Swagger project is a set of tools for developing and documenting REST APIs.
+
+- a common problem when designing a REST API is how to enable the client to retrieve multiple related objects in a single request.
+
+
+Handling partial failure using the Circuit breaker pattern
+
+- In a distributed system, whenever a service makes a synchronous request to another service, there is an ever-present risk of partial failure. 
+
+- The service could be down because of a failure or for maintenance. Or the service might be overloaded and responding extremely slowly to requests.
+
+- Because the client is blocked waiting for a response, the danger is that the failure could cascade to the client’s clients and so on and cause an outage.
+
+- Consider, for example, the scenario shown in figure 3.2, where the Order Service is unresponsive. A mobile client makes a REST request to an API gateway, which, as discussed in chapter 8, is the entry point into the application for API clients. The API gateway proxies the request to the unresponsive Order Service.
+
+- It’s essential that you design your services to prevent partial failures from cascading throughout the application. There are two parts to the solution:
+
+	+ You must use design RPI proxies, such as OrderServiceProxy, to handle unresponsive remote services.
+
+	+ You need to decide how to recover from a failed remote service. Using a library such as Hystrix is only part of the solution. 
+
+	i. One option is for a service to simply return an error to its client. 
+
+	ii. In other scenarios, returning a fallback value, such as either a default value or a cached response, may make sense.
+
+
+Using service discovery
+
+- Say you’re writing some code that invokes a service that has a REST API. In order to make a request, your code needs to know the network location (IP address and port) of a service instance. 
+
+- In a traditional application running on physical hardware, the network locations of service instances are usually static. But in a modern, cloud-based microservices application, it’s usually not that simple. As is shown in figure 3.4, a modern application is much more dynamic.
+
+- you can’t statically configure a client with the IP addresses of the services. Instead, an application must use a dynamic service discovery mechanism. 
+
+- its key component is a service registry, which is a database of the network locations of an application’s service instances.
+
+- The service discovery mechanism updates the service registry when service instances start and stop. When a client invokes a service, the service discovery mechanism queries the service registry to obtain a list of available service instances and routes the request to one of them.
+
+- There are two main ways to implement service discovery:
+
+	+ Applying the application-level service discovery patterns : One way to implement service discovery is for the application’s services and their clients to interact with the service registry. A service instance registers its network location with the service registry.
+
+ A service client invokes a service by first querying the service registry to obtain a list of service instances. It then sends a request to one of those instances.
+
+To improve performance, a client might cache the service instances. The service client then uses a load-balancing algorithm, such as a round-robin or random, to select a service instance.
+
+	+ Applying the platform-provided service discovery patterns :  many modern deployment platforms such as Docker and Kubernetes have a built-in service registry and service discovery mechanism. 
+
+The deployment platform gives each service a DNS name, a virtual IP (VIP) address, and a DNS name that resolves to the VIP address. 
+
+A service client makes a request to the DNS name/VIP, and the deployment platform automatically routes the request to one of the available service instances.
+
+The deployment platform includes a service registry that tracks the IP addresses of the deployed services. 
+
+
+3. Communicating using the Asynchronous messaging pattern
+
+- A messaging-based application typically uses a message broker, which acts as an intermediary between the services, although another option is to use a brokerless architecture, where the services communicate directly with each other.
+
+- A service client makes a request to a service by sending it a message. If the service instance is expected to reply, it will do so by sending a separate message back to the client.
+
+overview of messaging
+
+- In this model, messages are exchanged over message channels. A sender (an application or service) writes a message to a channel, and a receiver (an application or service) reads messages from a channel.
+
+- A message consists of :
+	
+	+ a header : is a collection of name-value pairs, metadata that describes the data being sent.  
+
+	+ a message body : data being sent, in either text or binary format.
+
+- There are two kinds of channels: 
+
+	+ point-to-point : channel delivers a message to exactly one of the consumers that is reading from the channel.
+
+	+  publish-subscribe : channel delivers each message to all of the attached consumers.
+
+
+
+
+
+
+4 Managing transactions with sagas 
+
++++++++++++++ Transaction management in a microservice architecture
+- The need for distributed transactions in a microservice architecture 
+- The trouble with distributed transactions 
+- Using the Saga pattern to maintain data consistency 
+
++++++++++++++ Coordinating sagas Choreography-based sagas 
+- Orchestration-based sagas 
+
++++++++++++++ Handling the lack of isolation 
+- Overview of anomalies 
+- Countermeasures for handling the lack of isolation 
+
++++++++++++++ The design of the Order Service and the Create Order Saga 
+- The OrderService class 
+- The implementation of the Create Order Saga 
+- The OrderCommandHandlers class
+- The OrderServiceConfiguration class 
+
+
+
+
+
+5 Designing business logic in a microservice architecture 
+
++++++++++++++ Business logic organization patterns 
+- Designing business logic using the Transaction script pattern 
+- Designing business logic using the Domain model pattern 
+- About Domain-driven design 
+
++++++++++++++ Designing a domain model using the DDD aggregate pattern 
+- The problem with fuzzy boundaries 
+- Aggregates have explicit boundaries 
+- Aggregate rules 
+- Aggregate granularity 
+- Designing business logic with aggregates 
+
++++++++++++++ Publishing domain events 
+- Why publish change events? 
+- What is a domain event? 
+- Event enrichment 
+- Identifying domain events 
+- Generating and publishing domain events 
+- Consuming domain events
+
++++++++++++++ Kitchen Service business logic 
+- The Ticket aggregate 
+
++++++++++++++ Order Service business logic 
+- The Order Aggregate 
+- The OrderService class 
+
+
+
+
+6 Developing business logic with event sourcing 
+
++++++++++++++ Developing business logic using event sourcing 
+- The trouble with traditional persistence 
+- Overview of event sourcing 
+- Handling concurrent updates using optimistic locking 
+- Event sourcing and publishing events 
+- Using snapshots to improve performance 
+- Idempotent message processing 
+- Evolving domain events 
+- Benefits of event sourcing 
+- Drawbacks of event sourcing 
+
++++++++++++++ Implementing an event store 
+- How the Eventuate Local event store works 
+- The Eventuate client framework for Java 
+
++++++++++++++ Using sagas and event sourcing together 
+- Implementing choreography-based sagas using event sourcing 
+- Creating an orchestration-based saga 
+- Implementing an event sourcing-based saga participant 
+- Implementing saga orchestrators using event sourcing 
+
+7 Implementing queries in a microservice architecture 
+
++++++++++++++ Querying using the API composition pattern 
+- The findOrder() query operation
+- Overview of the API composition pattern 
+- Implementing the findOrder() query operation using the API composition pattern 
+- API composition design issues 
+- The benefits and drawbacks of the API composition pattern 
+
++++++++++++++ Using the CQRS pattern 
+- Motivations for using CQRS 
+- Overview of CQRS 
+- The benefits of CQRS 
+- The drawbacks of CQRS 
+
++++++++++++++ Designing CQRS views 
+- Choosing a view datastore 
+- Data access module design 
+- Adding and updating CQRS views
+
++++++++++++++ Implementing a CQRS view with AWS DynamoDB 
+- The OrderHistoryEventHandlers module 
+- Data modeling and query design with DynamoDB 
+- The OrderHistoryDaoDynamoDb class 
+
+
+
+8 External API patterns 
+
++++++++++++++ External API design issues 
+- API design issues for the FTGO mobile client 
+- API design issues for other kinds of clients 
+
++++++++++++++ The API gateway pattern 
+- Overview of the API gateway pattern 
+- Benefits and drawbacks of an API gateway 
+- Netflix as an example of an API gateway 
+- API gateway design issues 
+
++++++++++++++ Implementing an API gateway 
+- Using an off-the-shelf API gateway product/service 
+- Developing your own API gateway 
+- Implementing an API gateway using GraphQL 
+
+
+
+9 Testing microservices: Part 1 
+
+- the complexity of the microservice architecture demands that you write automated tests.
+
++++++++++++++ Testing strategies for microservice architectures
+
+	+ Let’s say you’ve made a change to FTGO application’s Order Service. Naturally, the next step is for you to run your code and verify that the change works correctly. One option is to test the change manually.
+
+	+ manually. First, you run Order Service and all its dependencies, which include infrastructure services such as a database and other application services. Then you “test” the service by either invoking its API or using the FTGO application’s UI. The downside of this approach is that it’s a slow, manual way to test your code.
+
+	+ A much better option is to have automated tests that you can run during development. Your development workflow should be: edit code, run tests (ideally with a single keystroke), repeat. The fast-running tests quickly tell you whether your changes work within a few seconds.
+
+- Overview of testing 
+
+	+ WRITING AUTOMATED TESTS
+
+	= Automated tests are usually written using a testing framework. JUnit, for example, is a popular Java testing framework.
+	= An automated test typically consists of four phases
+	i. Setup — Initialize the test fixture, which consists of the SUT [System Under Test] and its dependencies, to the desired initial state.
+	ii. Exercise — Invoke the SUT, for example, invoke a method on the class under test. 
+	iii. Verify — Make assertions about the invocation’s outcome and the state of the SUT.
+	iv. Teardown — Clean up the test fixture, if necessary.  for example, roll back a transaction initiated by the setup phase.
+
+	+ TESTING USING MOCKS AND STUBS
+
+	= An SUT often has dependencies. The trouble with dependencies is that they can complicate and slow down tests. For example, the OrderController class invokes OrderService, which ultimately depends on numerous other application services and infrastructure services.
+
+	= We need a way to test an SUT in isolation.
+
+	= The solution, as figure 9.3 shows, is to replace the SUT’s dependencies with test doubles. A test double is an object that simulates the behavior of the dependency.
+
+	= There are two types of test doubles: stubs and mocks.
+
+	+ THE DIFFERENT TYPES OF TESTS
+
+	i. Unit tests — Test a small part of a service, such as a class.
+	ii. Integration tests — Verify that a service can interact with infrastructure services such as databases and other application services.
+	iii. Component tests—Acceptance tests for an individual service.
+	iv. End-to-end tests—Acceptance tests for the entire application.
+
+	+ USING THE TEST QUADRANT TO CATEGORIZE TESTS
+
+
+- The challenge of testing microservices 
+- The deployment pipeline 
+
++++++++++++++ Writing unit tests for a service 
+- Developing unit tests for entities 
+- Writing unit tests for value objects 
+- Developing unit tests for sagas 
+- Writing unit tests for domain services 
+- Developing unit tests for controllers 
+- Writing unit tests for event and message handlers 
+
+10 Testing microservices: Part 2 
+
++++++++++++++ Writing integration tests 
+- Persistence integration tests 
+- Integration testing REST-based request/response style interactions 
+- Integration testing publish/subscribe-style interactions 
+- Integration contract tests for asynchronous request/response interactions 
+
++++++++++++++ Developing component tests
+- Defining acceptance tests 
+- Writing acceptance tests using Gherkin 
+- Designing component tests 
+- Writing component tests for the FTGO Order Service
+
++++++++++++++ Writing end-to-end tests 
+- Designing end-to-end tests 
+- Writing end-to-end tests 
+- Running end-to-end tests 
+
+
+
+
+11 Developing production-ready services 
+
++++++++++++++ Developing secure services 
+- Overview of security in a traditional monolithic application 
+- Implementing security in a microservice architecture 
+
++++++++++++++ Designing configurable services 
+- Using push-based externalized configuration 
+- Using pull-based externalized configuration 
+
++++++++++++++ Designing observable services 
+- Using the Health check API pattern 
+- Applying the Log aggregation pattern 
+- Using the Distributed tracing pattern 
+- Applying the Application metrics pattern 
+- Using the Exception tracking pattern 
+- Applying the Audit logging pattern 
+
++++++++++++++ Developing services using the Microservice chassis pattern 
+- Using a microservice chassis 
+- From microservice chassis to service mesh 
+
+
+
+
+
+Summary
+ It’s essential that a service implements its functional requirements, but it must
+also be secure, configurable, and observable.
+ Many aspects of security in a microservice architecture are no different than in
+a monolithic architecture. But there are some aspects of application security
+that are necessarily different, including how user identity is passed between the
+
+API gateway and the services and who is responsible for authentication and autho-
+rization. A commonly used approach is for the API gateway to authenticate clients.
+
+The API gateway includes a transparent token, such as a JWT, in each request to a
+
+service. The token contains the identity of the principal and their roles. The ser-
+vices use the information in the token to authorize access to resources. OAuth 2.0
+
+is a good foundation for security in a microservice architecture.
+ A service typically uses one or more external services, such as message brokers
+and databases. The network location and credentials of each external service
+often depend on the environment that the service is running in. You must apply
+
+the Externalized configuration pattern and implement a mechanism that pro-
+vides a service with configuration properties at runtime. One commonly used
+
+approach is for the deployment infrastructure to supply those properties via
+operating system environment variables or a properties file when it creates a
+
+service instance. Another option is for a service instance to retrieve its configu-
+ration from a configuration properties server.
+
+ Operations and developers share responsibility for implementing the observ-
+ability patterns. Operations is responsible for the observability infrastructure,
+
+such as servers that handle log aggregation, metrics, exception tracking, and
+distributed tracing. Developers are responsible for ensuring that their services
+are observable. Services must have health check API endpoints, generate log
+entries, collect and expose metrics, report exceptions to an exception tracking
+service, and implement distributed tracing.
+ In order to simplify and accelerate development, you should develop services
+on top of a microservices chassis. A microservices chassis is framework or set of
+frameworks that handle various cross-cutting concerns, including those described
+
+in this chapter. Over time, though, it’s likely that many of the networking-
+related functions of a microservice chassis will migrate into a service mesh, a
+
+layer of infrastructure software through which all of a service’s network traffic
+flows.
+
+
+
+
+
+12 Deploying microservices 
+
+
+- The deployment process consists of the steps that must be performed by people— developers and operations—in order to get software into production.
+
+- Instead of handing off code to a separate production team, the adoption of DevOps means that the development team is also responsible for deploying their application or services. In some organizations, operations provides developers with a console for deploying their code.
+
+- Containers, an even more lightweight abstraction layer of top of virtual machines, are an increasingly popular way of deploying applications. You can also use an even more lightweight serverless deployment platform, such as AWS Lambda, for many use cases.
+
+- Virtual machines running on a highly automated cloud, such as AWS, have replaced the long-lived, pet-like physical and virtual machines.
+
+- A production environment must implement four key capabilities:
+
+	+ Service management interface
+
+	+ Runtime service management
+
+	+ Monitoring
+
+	+ Request routing
+
++++++++++++++ Deploying services using the Language-specific packaging format pattern 
+
+	+ To deploy Restaurant Service on a machine, you would first install the necessary
+runtime, which in this case is the JDK. If it’s a WAR file, you also need to install a
+web container such as Apache Tomcat. 
+
+	+ Once you’ve configured the machine, you copy the package to the machine and start the service.
+
+	+ Ideally, you’ve set up your deployment pipeline to automatically deploy the service
+to production,
+
+- Benefits of the Service as a language-specific package pattern 
+
+	+ Fast deployment
+
+	+ Efficient resource utilization, especially when running multiple instances on
+the same machine or within the same process
+	
+- Drawbacks of the Service as a language-specific package pattern 
+
+	+ Lack of encapsulation of the technology stack.
+
+	+ No ability to constrain the resources consumed by a service instance.
+
+	+ Lack of isolation when running multiple service instances on the same machine.
+
+	+ Automatically determining where to place service instances is challenging.
+
++++++++++++++ Deploying services using the Service as a virtual machine pattern 
+
+	+ imagine you want to deploy the FTGO Restaurant Service, except this time it’s on AWS EC2. One option would be to create and configure an EC2 instance and copy onto it the executable or WAR file.
+
+	+ The EC2 instances would typically be managed by an AWS Auto Scaling group, which attempts to ensure that the desired number of healthy instances is always running.
+
+	+ The deployment pipeline runs a VM image builder to create a VM image that contains the service’s code and whatever software is required to run it.
+
+	+ There are a variety of tools that your deployment pipeline can use to build VM images. One early tool for creating EC2 AMIs is Aminator, created by Netflix, which used it to deploy its video-streaming service on AWS.
+
+	+ Elastic Beanstalk, which is provided by AWS, is an easy way to deploy your services using VMs. You upload your code, such as a WAR file, and Elastic Beanstalk deploys it as one or more load-balanced and managed EC2 instances.
+
+- The benefits of deploying services as VMs
+
+	+ The VM image encapsulates the technology stack.
+
+	+ Isolated service instances.
+
+	+ Uses mature cloud infrastructure. 
+
+- The drawbacks of deploying services as VMs 
+
+	+ Less-efficient resource utilization
+
+	+ Relatively slow deployments
+
+	+ System administration overhead
+
+
++++++++++++++ Deploying services using the Service as a container pattern 
+
+	+ Containers are a more modern and lightweight deployment mechanism.
+
+	+ They’re an operating-system-level virtualization mechanism.
+
+	+ A container running a Java service, for example, would typically consist of the JVM process.
+
+	+ It typically has its own IP address, which eliminates port conflicts. All Java processes can, for example, listen on port 8080. Each container also has its own root filesystem.
+
+	+ The container runtime uses operating system mechanisms to isolate the containers from each other. The most popular example of a container runtime is Docker.
+
+- Deploying services using Docker 
+
+	+ BUILDING A DOCKER IMAGE
+
+	+ PUSHING A DOCKER IMAGE TO A REGISTRY
+
+	+ RUNNING A DOCKER CONTAINER
+
+- Benefits of deploying services as containers 
+
+	+ Encapsulation of the technology stack in which the API for managing your ser-
+vices becomes the container API.
+
+	+ Service instances are isolated.
+
+	+ Service instances’s resources are constrained.
+
+- Drawbacks of deploying services as containers 
+
+
+
++++++++++++++ Deploying the FTGO application with Kubernetes 
+
+	+ Kubernetes is a Docker orchestration framework, a layer of software on top of Docker that turns a set of machines into a single pool of resources for running services.
+
+	+ It endeavors to keep the desired number of instances of each service running at all times, even when service instances or machines crash.
+
+- Overview of Kubernetes : A Docker orchestration framework, such as Kubernetes , has three main functions
+
+	+ Resource management
+
+	+ Scheduling
+
+	+ Service management
+
+
+- Deploying the Restaurant service on Kubernetes 
+
+	+ The easiest way to create a Kubernetes object such as a deployment is by writing a YAML file.
+
+- Deploying the API gateway 
+
+	+ but what about API Gateway? Its role is to route traffic from the outside world to the service.
+
+	+ It therefore needs to be accessible from outside the cluster.
+
+- Zero-downtime deployments 
+
+	+ Imagine you’ve updated Restaurant Service and want to deploy those changes into production. Updating a running service is a simple three-step process when using Kubernetes:
+
+	i. Build a new container image and push it to the registry using the same process described earlier. The only difference is that the image will be tagged with a different version tag—for example, ftgo-restaurant-service:1.1.0.RELEASE.
+
+	ii. Edit the YAML file for the service’s deployment so that it references the new image.
+
+	iii. Update the deployment using the kubectl apply -f command.
+
+- Using a service mesh to separate deployment from release 
+
+	+ previous 3 approaches share some common characteristics.
+
+	i. all three patterns you must preprovision some computing resources—either physical machines, virtual machines, or containers.
+
+	ii. you’re responsible for system administration.
+
+	
++++++++++++++ Deploying services using the Serverless deployment pattern 
+
+	+ previous 3 approaches share some common characteristics.
+
+	i. all three patterns you must preprovision some computing resources—either physical machines, virtual machines, or containers.
+
+	ii. you’re responsible for system administration.
+
+- Overview of serverless deployment with AWS Lambda 
+
+	+ AWS Lambda supports Java, NodeJS, C#, GoLang, and Python.
+
+	+ To deploy a service, you package your application as a ZIP file or JAR file, upload it to AWS Lambda, and specify the name of the function to invoke to handle a request (also called an event).
+
+	+ AWS Lambda automatically runs enough instances of your microservice to handle incoming requests.
+
+
+- Developing a lambda function 
+
+	+ A lambda function’s code and the packaging depend on the programming language. A Java lambda function is a class that implements the generic interface RequestHandler, which is defined by the AWS Lambda Java core library and shown in the following listing.
+
+	+ This interface takes two type parameters: I, which is the input type, and O, which is the output type.
+
+- Invoking lambda functions 
+
+	+ HTTP requests
+	+ Events generated by AWS services
+	+ Scheduled invocations
+	+ Directly using an API call
+
+- Benefits of using lambda functions 
+
+	+ Integrated with many AWS services
+
+	+ Eliminates many system administration tasks
+
+	+ Elasticity
+
+	+ Usage-based pricing
+
+- Drawbacks of using lambda functions 
+
++++++++++++++ Deploying a RESTful service using AWS Lambda and AWS Gateway 
+
+- The design of the AWS Lambda version of Restaurant Service 
+- Packaging the service as ZIP file 
+
+	+ Before the service can be deployed, we must package it as a ZIP file.
+
+	+ We can easily build the ZIP file using the following Gradle task:
+
+- Deploying lambda functions using the Serverless framework 
+
+	+ When using Serverless, you write a simple serverless.yml file that defines your lambda functions and their RESTful endpoints.
+
+	+ Serverless then deploys the lambda functions and creates and configures an API gateway that routes requests to them.
+
+	+ You can then use the serverless deploy command, which reads the serverless.yml
+file, deploys the lambda functions, and configures the AWS API Gateway.
+
+	+ AWS Lambda will provision as many instances of each Restaurant Service lambda function that are needed to support the load.
+
+
++++++++++++++ Summary
+	+ You should choose the most lightweight deployment pattern that supports your service’s requirements. Evaluate the options in the following order: serverless, containers, virtual machines, and language-specific packages.
+	+ A serverless deployment isn’t a good fit for every service, because of long-tail latencies and the requirement to use an event/request-based programming model. When it is a good fit, though, serverless deployment is an extremely compelling option because it eliminates the need to administer operating systems and runtimes and provides automated elastic provisioning and request-based pricing.
+
+	+ Docker containers, which are a lightweight, OS-level virtualization technology, are more flexible than serverless deployment and have more predictable latency. It’s best to use a Docker orchestration framework such as Kuberne-
+tes, which manages containers on a cluster of machines. The drawback of using containers is that you must administer the operating systems and runtimes and most likely the Docker orchestration framework and the VMs that it runs on.
+	
+	+ The third deployment option is to deploy your service as a virtual machine. On one hand, virtual machines are a heavyweight deployment option, so deployment is slower and it will most likely use more resources than the second option. On the other hand, modern clouds such as Amazon EC2 are highly automated and provide a rich set of features. Consequently, it may sometimes be easier to deploy a small, simple application using virtual machines than to set up a Docker orchestration framework.
+
+	+ Deploying your services as language-specific packages is generally best avoided unless you only have a small number of services. For example, as described in chapter 13, when starting on your journey to microservices you’ll probably deploy the services using the same mechanism you use for your monolithic application, which is most likely this option. You should only consider setting up a sophisticated deployment infrastructure such as Kubernetes once you’ve developed some services.
+
+	+ One of the many benefits of using a service mesh—a networking layer that mediates all network traffic in and out of services—is that it enables you to deploy a service in production, test it, and only then route production traffic to it. Separating deployment from release improves the reliability of rolling out new versions of services.
+
+
+
+
+13 Refactoring to microservices 
+
++++++++++++++ Overview of refactoring to microservices 
+- Why refactor a monolith? 
+- Strangling the monolith 
+
++++++++++++++ Strategies for refactoring a monolith to microservices 
+
+- Implement new features as services 
+
+- Separate presentation tier from the backend 
+
+	A typical enterprise application consists of the following layers:
+	+ Presentation logic — This consists of modules that handle HTTP requests and generate HTML pages that implement a web UI. 
+	+ Business logic — This consists of modules that implement the business rules
+	+ Data access logic — This consists of modules that access infrastructure services such as databases and message brokers.
+
+- Extract business capabilities into services 
+
+	+ SPLITTING THE DOMAIN MODEL
+	+ REFACTORING THE DATABASE
+	+ REPLICATE DATA TO AVOID WIDESPREAD CHANGES
+	+ WHAT SERVICES TO EXTRACT AND WHEN
+
+
+
++++++++++++++ Designing how the service and the monolith collaborate 
+- Designing the integration glue 
+
+DESIGNING THE INTEGRATION GLUE API
+PICKING AN INTERACTION STYLE AND IPC MECHANISM
+IMPLEMENTING AN ANTI-CORRUPTION LAYER
+HOW THE MONOLITH PUBLISHES AND SUBSCRIBES TO DOMAIN EVENTS
+
+
+- Maintaining data consistency across a service and a monolith 
+
+SEQUENCING THE EXTRACTION OF SERVICES TO AVOID IMPLEMENTING COMPENSATING TRANSACTIONS
+IN THE MONOLITH
+
+- Handling authentication and authorization
+
+THE MONOLITH’S LOGINHANDLER SETS THE USERINFO COOKIE
+THE API GATEWAY MAPS THE USERINFO COOKIE TO THE AUTHORIZATION HEADER
+ 
+
++++++++++++++ Implementing a new feature as a service: handling misdelivered orders 
+- The design of Delayed Delivery Service 
+
+- Designing the integration glue for Delayed Delivery Service 
+
+QUERYING CUSTOMER CONTACT INFORMATION USING CUSTOMERCONTACTINFOREPOSITORY
+PUBLISHING AND CONSUMING ORDER AND RESTAURANT DOMAIN EVENTS
+
+
++++++++++++++ Breaking apart the monolith: extracting delivery management 
+- Overview of existing delivery management functionality 
+- Overview of Delivery Service 
+
+- Designing the Delivery Service domain model 
+
+IDENTIFYING WHICH ENTITIES AND THEIR FIELDS ARE PART OF DELIVERY MANAGEMENT
+DECIDING WHICH DATA TO MIGRATE TO DELIVERY SERVICE
+THE DESIGN OF THE DELIVERY SERVICE DOMAIN LOGIC
+
+- The design of the Delivery Service integration glue 
+
+THE DESIGN OF THE DELIVERY SERVICE API
+HOW THE DELIVERY SERVICE ACCESSES THE FTGO MONOLITH’S DATA
+HOW THE FTGO MONOLITH ACCESSES THE DELIVERY SERVICE DATA
+
+- Changing the FTGO monolith to interact with Delivery Service 
+
+DEFINING A DELIVERYSERVICE INTERFACE
+REFACTORING THE MONOLITH TO CALL THE DELIVERYSERVICE INTERFACE
+IMPLEMENTING THE DELIVERYSERVICE INTERFACE
+
++++++++++++++ Summary
+	+ Before migrating to a microservice architecture, it’s important to be sure that your software delivery problems are a result of having outgrown your monolithic architecture. You might be able to accelerate delivery by improving your software development process.
+
+	+ It’s important to migrate to microservices by incrementally developing a strangler application. A strangler application is a new application consisting of microservices that you build around the existing monolithic application. You should demonstrate value early and often in order to ensure that the business supports the migration effort.
+
+	+ A great way to introduce microservices into your architecture is to implement new features as services. Doing so enables you to quickly and easily develop a feature using a modern technology and development process. It’s a good way to quickly demonstrate the value of migrating to microservices.
+
+	+ One way to break up the monolith is to separate the presentation tier from the backend, which results in two smaller monoliths. Although it’s not a huge improvement, it does mean that you can deploy each monolith independently.
+This allows, for example, the UI team to iterate more easily on the UI design without impacting the backend.
+
+	+ The main way to break up the monolith is by incrementally migrating functionality from the monolith into services. It’s important to focus on extracting the services that provide the most benefit. For example, you’ll accelerate development if you extract a service that implements functionality that’s being actively developed.
+
+	+ Newly developed services almost always have to interact with the monolith. A service often needs to access a monolith’s data and invoke its functionality. The monolith sometimes needs to access a service’s data and invoke its functionality. To implement this collaboration, develop integration glue, which consists of inbound and outbound adapters in the monolith.
+
+	+ To prevent the monolith’s domain model from polluting the service’s domain model, the integration glue should use an anti-corruption layer, which is a layer of software that translates between domain models.
+
+	+ One way to minimize the impact on the monolith of extracting a service is to replicate the data that was moved to the service back to the monolith’s database. Because the monolith’s schema is left unchanged, this eliminates the need to make potentially widespread changes to the monolith code base.
+
+	+ Developing a service often requires you to implement sagas that involve the monolith. But it can be challenging to implement a compensatable transaction that requires making widespread changes to the monolith. Consequently, you sometimes need to carefully sequence the extraction of services to avoid implementing compensatable transactions in the monolith.
+
+	+ When refactoring to a microservice architecture, you need to simultaneously
+support the monolithic application’s existing security mechanism, which is often based on an in-memory session, and the token-based security mechanism used by the services. Fortunately, a simple solution is to modify the monolith’s login handler to generate a cookie containing a security token, which is then forwarded to the services by the API gateway.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+microservice design patterns
+
+
+Design patterns in microservices are reusable solutions to common problems that arise during the development and implementation of microservice architectures. These patterns provide a way to address various challenges, such as communication, scalability, and fault tolerance. Here are some common design patterns in microservices:
+	1	API Gateway Pattern: This pattern involves using a single entry point for all client requests, routing them to appropriate microservices. The API Gateway is responsible for request routing, composition, and protocol translation, simplifying the client-side communication with various microservices.
+	2	Service Registry and Discovery Pattern: This pattern is used to manage the dynamic nature of microservices. When microservices are deployed, they register themselves with a service registry. Clients or other services can then query the registry to discover the available instances and their locations.
+	3	Circuit Breaker Pattern: This pattern is used to handle failures in a distributed system. It prevents cascading failures by stopping the communication between services when a certain failure threshold is reached. After a configured time, the circuit breaker allows a limited number of requests to pass through and checks whether the issue is resolved.
+	4	Bulkhead Pattern: This pattern isolates critical resources in a system by limiting the impact of failures in one part of the system on the rest. By segregating resources, the bulkhead pattern ensures that a problem in one service does not affect the entire application.
+	5	Event-Driven Pattern: This pattern promotes loose coupling between services by using events for communication. Services can publish events when a change occurs, and other services can subscribe to those events. This approach allows for better scalability and adaptability in a microservices architecture.
+	6	CQRS (Command Query Responsibility Segregation) Pattern: This pattern separates the read (query) and write (command) operations in a microservices architecture. By implementing separate data models and services for reads and writes, the system can optimize performance and scalability.
+	7	Saga Pattern: This pattern is used to manage distributed transactions across multiple microservices. Instead of using a traditional two-phase commit, the Saga pattern breaks transactions into a series of local transactions, coordinating them through event-driven communication or orchestration.
+	8	Sidecar Pattern: In this pattern, a sidecar container is deployed alongside the main service container, extending or enhancing its functionality. The sidecar container can handle tasks like monitoring, logging, or proxying, allowing the main service to focus on its core responsibilities.
+	9	Backends for Frontends Pattern (BFF): This pattern involves creating separate backends for different frontends (e.g., web, mobile, desktop), catering to their specific requirements. Each backend is responsible for aggregating and composing data from multiple microservices to provide a tailored experience for the respective frontend.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

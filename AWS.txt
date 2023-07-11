@@ -1,0 +1,292 @@
+
++++++++AWS
+
+- Amazon Web Services (AWS) is Amazon’s cloud web hosting platform that offers flexible, reliable, scalable, easy-to-use, and cost-effective solutions.Amazon Web Services (AWS) is Amazon’s cloud web hosting platform that offers flexible, reliable, scalable, easy-to-use, and cost-effective solutions.
+
+- In 2006, Amazon Web Services (AWS) started to offer IT services to the market in the form of web services, which is nowadays known as cloud computing.
+
+What is Cloud Computing?
+
+- Cloud computing is an internet-based computing service in which large groups of remote servers are networked to allow centralized data storage, and online access to computer services or resources.
+
+- Cloud computing is a model that enables the following features.
+
+	•	Users can provision and release resources on-demand.
+	•	Resources can be scaled up or down automatically, depending on the load.
+	•	Resources are accessible over a network with proper security.
+	•	Cloud service providers can enable a pay-as-you-go model
+
+Types of Clouds
+
+i. Public Cloud : the third-party service providers make resources and services available to their customers via Internet. 
+
+ii. Private Cloud : also provides almost similar features as public cloud, but the data and services are managed by the organization or by the third party only for the customer’s organization. 
+
+iii. Hybrid Cloud : is the combination of both private and public cloud. The decision to run on private or public cloud usually depends on various parameters like sensitivity of data and applications.
+
+
+Cloud Service Models
+i. IaaS :  Infrastructure as a Service. It provides users with the capability to provision processing, storage, and network connectivity on demand.  
+- the customers can develop their own applications on these resources.
+ii. PaaS : Platform as a Service. the service provider provides various services like databases, queues, workflow engines, e-mails, etc. to their customers. The customer can then use these components for building their own applications. 
+
+iii. SaaS : Software as a Service. the third-party providers provide end-user applications to their customers with some administrative capability at the application level, such as the ability to create and manage their users. 
+
+- Also some level of customizability is possible such as the customers can use their own corporate logos, colors, etc.
+
+Advantages of Cloud Computing
+
+	•	Cost-Efficient 
+
+	•	Reliability 
+
+	•	Unlimited Storage 
+
+	•	Backup & Recovery 
+
+	•	Easy Access to Information 
+
+
+Disadvantages of Cloud Computing
+
+- Security issues
+
+- Technical issues
+
+- Not easy to switch service providers
+
+
++++++++++++++++++++++++++++++ Amazon Web Services - Basic Architecture
+
+i. Load Balancing
+
+- AWS provides the Elastic Load Balancing service, it distributes the traffic to EC2 instances across multiple available sources
+- Elastic Load Balancing can dynamically grow and shrink the load-balancing capacity to adjust to traffic demands 
+ii. Amazon Cloud-front
+- It’s responsible for content delivery, i.e. used to deliver website. 
+- it’s optimized to work with other Amazon Web Services, like Amazon S3 and Amazon EC2. 
+- It also works fine with any non-AWS origin server and stores the original files in a similar manner.
+
+iii. Elastic Load Balancer
+
+- It is used to spread the traffic to web servers, which improves performance. 
+- AWS provides the Elastic Load Balancing service, in which traffic is distributed to EC2 instances over multiple available zones
+- and dynamic addition and removal of Amazon EC2 hosts from the load-balancing rotation.
+iv. Security Management
+
+- Amazon’s Elastic Compute Cloud (EC2) provides a feature called security groups, which is similar to an inbound network firewall, 
+- in which we have to specify the protocols, ports, and source IP ranges that are allowed to reach your EC2 instances.
+v. Elastic Caches
+
+- Amazon Elastic Cache is a web service that manages the memory cache in the cloud. 
+- In memory management, cache has a very important role and helps to reduce the load on the services, improves the performance and scalability on the database tier by caching frequently used information.
+
+vi. Amazon RDS
+
+- Amazon RDS (Relational Database Service) provides a similar access as that of MySQL, Oracle, or Microsoft SQL Server database engine. The same queries, applications, and tools can be used with Amazon RDS.
+- It automatically patches the database software and manages backups as per the user’s instruction. 
+- It also supports point-in-time recovery. 
+vii. Hosting RDMS on EC2 Instances
+- Amazon RDS allows users to install RDBMS (Relational Database Management System) of your choice like MySQL, Oracle, SQL Server, DB2, etc. on an EC2 instance and can manage as required.
+- Amazon EC2 uses Amazon EBS (Elastic Block Storage) similar to network-attached storage. 
+- All data and logs running on EC2 instances should be placed on Amazon EBS volumes, which will be available even if the database host fails.
+- Amazon EBS volumes automatically provide redundancy within the availability zone, which increases the availability of simple disks. 
+viii. Storage & Backups
+- AWS cloud provides various options for storing, accessing, and backing up web application data and assets. 
+-The Amazon S3 (Simple Storage Service) provides a simple web-services interface that can be used to store and retrieve any amount of data, at any time, from anywhere on the web.
+- Amazon S3 stores data as objects within resources called buckets. 
+- The user can store as many objects as per requirement within the bucket, and can read, write and delete objects from the bucket.
+- Amazon EBS is effective for data that needs to be accessed as block storage and requires persistence beyond the life of the running instance, such as database partitions and application logs.
+ix. Auto Scaling
+- The difference between AWS cloud architecture and the traditional hosting model is that AWS can dynamically scale the web application fleet on demand to handle changes in traffic.
+
++++++++++++++++++++++++++++++ AWS - Elastic Compute Cloud
+
+- Amazon EC2 (Elastic Compute Cloud) is a web service interface that provides resizable compute capacity in the AWS cloud.
+
+- EC2 instances can be resized and the number of instances scaled up or down as per our requirement.
+
+- EC2 Components :
+
+	+ Operating System Support : Amazon EC2 supports multiple OS in which we need to pay additional licensing fees like: Red Hat Enterprise, SUSE Enterprise and Oracle Enterprise Linux, UNIX, Windows Server, etc.
+
+	+ Security : Users have complete control over the visibility of their AWS account. the security systems allow create groups and place running instances into it as per the requirement
+
+	+ Pricing : WS offers a variety of pricing options, depending on the type of resources, types of applications and database.
+
+	+ Fault tolerance : Amazon EC2 allows the users to access its resources to design fault-tolerant applications. also comprises geographic regions and isolated locations known as availability zones for fault tolerance and stability.
+
+	+ Migration : This service allows the users to move existing applications into EC2
+
+How to Use AWS EC2
+
+Step 1 − Sign-in to AWS account and open IAM console by using the following link https://console.aws.amazon.com/iam/.
+Step 2 − In the navigation Panel, create/view groups and follow the instructions.
+Step 3 − Create IAM user. Choose users in the navigation pane. Then create new users and add users to the groups.
+Step 4 − Create a Virtual Private Cloud using the following instructions.
+	•	Open the Amazon VPC console by using the following link − https://console.aws.amazon.com/vpc/
+	•	Select VPC from the navigation panel. Then select the same region in which we have created key-pair.
+	•	Select start VPC wizard on VPC dashboard.
+	•	Select VPC configuration page and make sure that VPC with single subnet is selected. The choose Select.
+	•	VPC with a single public subnet page will open. Enter the VPC name in the name field and leave other configurations as default.
+	•	Select create VPC, then select Ok
+
+Step 5 − Create WebServerSG security groups and add rules using the following instructions.
+	•	On the VPC console, select Security groups in the navigation panel.
+	•	Select create security group and fill the required details like group name, name tag, etc.
+	•	Select your VPC ID from the menu. Then select yes, create button.
+	•	Now a group is created. Select the edit option in the inbound rules tab to create rules.
+
+Step 6 − Launch EC2 instance into VPC using the following instructions.
+	•	Open EC2 console by using the following link − https://console.aws.amazon.com/ec2/
+	•	Select launch instance option in the dashboard.
+	•	A new page will open. Choose Instance Type and provide the configuration. Then select Next: Configure Instance Details.
+	•	A new page will open. Select VPC from the network list. Select subnet from the subnet list and leave the other settings as default.
+	•	Click Next until the Tag Instances page appears.
+
+Step 7 − On the Tag Instances page, provide a tag with a name to the instances. Select Next: Configure Security Group.
+Step 8 − On the Configure Security Group page, choose the Select an existing security group option. Select the WebServerSG group that we created previously, and then choose Review and Launch.
+Step 9 − Check Instance details on Review Instance Launch page then click the Launch button.
+Step 10 − A pop up dialog box will open. Select an existing key pair or create a new key pair. Then select the acknowledgement check box and click the Launch Instances button.
+
++++++++++++++++++++++++++++++ Amazon Web Services - Virtual Private Cloud
+
+- Amazon Virtual Private Cloud (VPC) allows the users to use AWS resources in a virtual network.
+
+- The users can customize their virtual networking environment as they like, such as selecting own IP address range, creating subnets, and configuring route tables and network gateways.
+
+The list of AWS services that can be used with Amazon VPC are −
+	•	Amazon EC2
+	•	Amazon Route 53
+	•	Amazon WorkSpaces
+	•	Auto Scaling
+	•	Elastic Load Balancing
+	•	AWS Data Pipeline
+	•	Elastic Beanstalk
+	•	Amazon Elastic Cache
+	•	Amazon EMR
+	•	Amazon OpsWorks
+	•	Amazon RDS
+	•	Amazon Redshift
+
+
+
+
+
+How to Use Amazon VPC?
+Following are the steps to create VPC.
+Create VPC
+Step 1 − Open the Amazon VPC console by using the following link − https://console.aws.amazon.com/vpc/
+Step 2 − Select creating the VPC option on the right side of the navigation bar. Make sure that the same region is selected as for other services.
+Step 3 − Click the start VPC wizard option, then click VPC with single public subnet option on the left side.
+Step 4 − A configuration page will open. Fill in the details like VPC name, subnet name and leave the other fields as default. Click the Create VPC button.
+Step 5 − A dialog box will open, showing the work in progress. When it is completed, select the OK button.
+The Your VPCs page opens which shows a list of available VPCs. The setting of VPC can be changed here
+Select/Create VPC Group
+Step 1 − Open the Amazon VPC console by using the following link − https://console.aws.amazon.com/vpc/
+Step 2 − Select the security groups option in the navigation bar, then choose create security group option.
+Step 3 − A form will open, enter the details like group name, name tag, etc. Select ID of your VPC from VPC menu, then select the Yes, create button.
+Step 4 − The list of groups opens. Select the group name from the list and set rules. Then click the Save button.
+
+Launch Instance into VPC
+Step 1 − Open the Amazon VPC console using the following link − https://console.aws.amazon.com/vpc/
+Step 2 − Select the same region as while creating VPC and security group.
+Step 3 − Now select the Launch Instance option in the navigation bar.
+Step 4 − A page opens. Choose the AMI which is to be used.
+Step 5 − A new page opens. Choose an Instance Type and select the hardware configuration. Then select Next: Configure Instance Details.
+Step 6 − Select the recently created VPC from the Network list, and the subnet from the Subnet list. Leave the other settings as default and click Next till the Tag Instance page.
+Step 7 − On the Tag Instance page, tag the instance with the Name tag. This helps to identify your instance from the list of multiple instances. Click Next: Configure Security Group.
+Step 8 − On the Configure Security Group page, select the recently created group from the list. Then, select Review and Launch button.
+Step 9 − On the Review Instance Launch page, check your instance details, then select Launch.
+Step 10 − A dialog box appears. Choose the option Select an existing key pair or create a new key pair, then click the Launch Instances button.
+Step 11 − The confirmation page open which shows all the details related to instances.
+
+
++++++++++++++++++++++++++++++ Amazon Web Services - Route 53
+
+- Amazon Route 53 is a highly available and scalable Domain Name System (DNS) web service.
+
+- It is designed for developers and corporates to route the end users to Internet applications by translating human readable names like www.mydomain.com, into the numeric IP addresses like 192.0.2.1 that computers use to connect to each other.
+
+How to Configure Amazon Route 53?
+Following are the steps to configure Route 53.
+Step 1 − Open the Amazon Route 53 console using this link − https://console.aws.amazon.com/route53/.
+Step 2 − Click create hosted zone option on the top left corner of the navigation bar.
+Step 3 − A form page opens. Provide the required details such as domain name and comments, then click the Create button.
+
+Step 4 − Hosted zone for the domain will be created. There will be four DNS endpoints called delegation set and these endpoints must be updated in the domain names Nameserver settings
+Step 5 − If it is godaddy.com then select domain’s control panel and update the Route 53 DNS endpoints. Delete the rest default values. It will take 2-3 minutes to update.
+Step 6 − Go back to Route 53 console and select the go to record sets option. This will show you the list of record sets. By default, there are two record sets of type NS & SOA.
+Step 7 − To create your record set, select the create record set option. Fill the required details such as: Name, Type, Alias, TTL seconds, Value, Routing policy, etc. Click the Save record set button.
+Step 8 − Create one more record set for some other region so that there are two record sets with the same domain name pointing to different IP addresses with your selected routing policy.
+Once completed, the user requests will be routed based on the network policy.
+
+
++++++++++++++++++++++++++++++ Amazon Web Services - Amazon S3
+
+- Amazon S3 (Simple Storage Service) is a scalable, high-speed, low-cost web-based service designed for online backup and archiving of data and application programs.
+
+How to Configure S3?
+Following are the steps to configure a S3 account.
+Step 1 − Open the Amazon S3 console using this link − https://console.aws.amazon.com/s3/home
+Step 2 − Create a Bucket using the following steps.
+	•	A prompt window will open. Click the Create Bucket button at the bottom of the page.
+	•	Create a Bucket dialog box will open. Fill the required details and click the Create button.
+	•	The bucket is created successfully in Amazon S3. The console displays the list of buckets and its properties.
+	•	Select the Static Website Hosting option. Click the radio button Enable website hosting and fill the required details.
+
+Step 3 − Add an Object to a bucket using the following steps.
+	•	Open the Amazon S3 console using the following link − https://console.aws.amazon.com/s3/home
+	•	Click the Upload button.
+	•	Click the Add files option. Select those files which are to be uploaded from the system and then click the Open button.
+	•	Click the start upload button. The files will get uploaded into the bucket.
+
+To open/download an object − In the Amazon S3 console, in the Objects & Folders list, right-click on the object to be opened/downloaded. Then, select the required object.
+How to Move S3 Objects?
+Following are the steps to move S3 objects.
+step 1 − Open Amazon S3 console.
+step 2 − Select the files & folders option in the panel. Right-click on the object that is to be moved and click the Cut option.
+step 3 − Open the location where we want this object. Right-click on the folder/bucket where the object is to be moved and click the Paste into option.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
